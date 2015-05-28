@@ -1,0 +1,5 @@
+These are the basic responses for DELETE... delete the ones that we don't do... are there any other special ones for this service? Check.
+
+
+
+!contents -h

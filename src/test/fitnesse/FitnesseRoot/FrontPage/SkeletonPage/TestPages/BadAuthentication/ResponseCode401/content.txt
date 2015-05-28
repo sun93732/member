@@ -1,0 +1,7 @@
+Hey!
+Remember to use the HEADERS as variables that we define in this page... !include .SetUp.HeaderData
+
+Just so it's clear - we need one of these set of tests per service.
+The 403 stuff we have to test PER VERB (i.e. for GET, for POST etc...)
+ 
+!contents -h

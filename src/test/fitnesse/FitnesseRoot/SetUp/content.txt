@@ -1,0 +1,30 @@
+This is the Setup page. It affects every other page in our Fitnesse structure.
+It's where we set things that need to affect everything else.
+
+So it's where we define the Endpoints for services...
+!include -c .SetUp.EndPoints
+
+...and where we include the Header Data that we send in requests...
+!include -c .SetUp.HeaderData
+
+
+
+!****> Generic Fitnesse includes etc that effect everything
+!3 Connection Timeout
+| Table:smartrics.rest.fitnesse.fixture.RestFixtureConfig |
+| restfixture.content.handlers.map | application/vnd.paymark_api+json=JSON |
+| http.client.connection.timeout |30000 |
+
+!define TEST_SYSTEM {slim} 
+|import                                      |
+|fitnesse.slim.test                          |
+|fitnesse.fixtures                           |
+|fitness.fixtures.general                    |
+|nz.paymark.plugins.fitnesse.fixtures.general|
+****!
+
+
+
+
+
+

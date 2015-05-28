@@ -1,0 +1,9 @@
+!note Start with a POST, then use PUT to move it through the various states
+
+!1 Positive tests
+Start with a new POST for each flow that you need to test
+Do PUTS to move it through the allowed state flows
+
+!1 Negative tests
+Start with a new POST.
+Use PUT to move the object into a desired starting state, then use PUT to test that it cannot move from there into forbidden states. Expect a lot of 409 :)

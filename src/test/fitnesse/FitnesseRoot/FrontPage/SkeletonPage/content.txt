@@ -1,0 +1,18 @@
+!1 Welcome to the Fitnesse Skeleton 
+!1 (replace this with "Functional Testing for XXXXXXX Service")
+!img-r http://files/skeleton.png
+This is a basic structure for creating functional tests for a micro service
+
+!*****> Here are useful short cuts to information about how to use Fitnesse, and general service requirements
+http://www.fitnesse.org/FitNesse.FullReferenceGuide.UserGuide.FitNesseWiki.MarkupLanguageReference - markup reference for Fitnesse
+http://smartrics.blogspot.co.nz/2008/08/get-fitnesse-with-some-rest.html - description of how to use the RestFixture
+http://fitnesse.org/PlugIns.JdbcFixtures.JdbcSamples.ScriptFixture - some stuff about how to use JDBC in Fitnesse
+https://paymarktechnology.hackpad.com/General-Service-Requirements-abgfHjXjWAW - general requirements for Paymark micro services
+*****!
+
+Start with this skeleton for each new set of tests for a micro-service. Delete pages that you don't need. Change the picture of the skeleton.
+This page lives BELOW !-/FitnesseRoot/FrontPage-!
+
+Link to the hackpad that contains the requirements for this service: https://paymarktechnology.hackpad.com/General-Service-Requirements-abgfHjXjWAW
+
+!contents -h

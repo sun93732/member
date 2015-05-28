@@ -1,0 +1,9 @@
+!img-l http://files/endpoint.png
+
+!1    Service End points
+
+!2 Example endpoint
+!define ExampleServiceEndPoint {https://api.dev.paymark.co.nz/example}
+
+!2 Another Example endpoint
+!define ExampleServiceEndPoint {https://api.dev.paymark.co.nz/anotherexample}

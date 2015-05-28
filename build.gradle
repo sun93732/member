@@ -1,0 +1,24 @@
+buildscript {
+	repositories {
+		maven {
+			url "${artifactoryBaseUrl}java-tools/"
+			credentials {
+				username = "${credentialsArtifactoryIdentity}"
+				password = "${credentialsArtifactoryPassword}"
+			}
+		}
+		ivy {
+			url "${artifactoryBaseUrl}java-tools/"
+			credentials {
+				username = "${credentialsArtifactoryIdentity}"
+				password = "${credentialsArtifactoryPassword}"
+			}
+		}
+	}
+	dependencies {
+		classpath 'paymark.tools:gradle.ci:+'
+	}
+}
+
+import nz.paymark.tools.gradle.*
+apply plugin: BuildSettingsPlugin

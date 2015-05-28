@@ -1,0 +1,13 @@
+!1 Header Data
+
+!2 Example Header...
+!define myExampleHeader {!- Content-Type:application/vnd.paymark_api+json 
+Accept:application/vnd.paymark_api+json 
+Partner: ExamplePartner
+Authorization: 95686ba7-730d-4e4d-9bfb-5222211336ca -!  }
+
+!2 Another Example Header...
+!define myExampleHeader {!- Content-Type:application/vnd.paymark_api+json 
+Accept:application/vnd.paymark_api+json 
+Partner: AnotherExamplePartner
+Authorization: 95686ba7-730d-4e4d-9bfb-5222211336ca -!  }
