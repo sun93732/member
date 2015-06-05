@@ -22,3 +22,63 @@ buildscript {
 
 import nz.paymark.tools.gradle.*
 apply plugin: BuildSettingsPlugin
+
+apply from: 'liquibase.gradle'
+
+task disableMain(type: DisableMainConfig){}
+task modelConf(type: JarConfig){
+	confName = 'model'
+}
+task clientConf(type: JarConfig) {
+	confName = 'client'
+	srcDirs = sourceSets.model.java.srcDirs
+	extendsConfs = [configurations.modelCompile]
+}
+task serviceConf(type: WarConfig) {
+	confName = 'service'
+	srcDirs = sourceSets.model.java.srcDirs
+	extendsConfs = [configurations.modelCompile]
+}
+
+task generateWithMethods(type: GenerateModelWithMethods) {
+	jobs = [
+		GeneratorJob.inSitu(file('./src/model/java/nz/paymark/member/model/Member.java')),
+		]
+}
+
+dependencies {
+	compile ('paymark.common:shared:0.7.+')
+	compile 'org.slf4j:slf4j-log4j12:1.7.6'
+	compile 'org.apache.commons:commons-lang3:3.3.2'
+	compileOnly 'org.hibernate:hibernate-jpamodelgen:4.3.8.Final'
+	
+	modelCompile 'org.hibernate:hibernate-core:4.3.8.Final'
+	modelCompile 'com.mangofactory:swagger-springmvc:1.0.0'
+	modelCompile 'com.fasterxml.jackson.core:jackson-databind:2.5.1'
+	modelCompile 'org.hibernate:hibernate-entitymanager:4.3.8.Final'
+	modelCompile 'com.fasterxml.jackson.core:jackson-databind:2.2.2'
+	
+	serviceCompile 'paymark.common:webservice:0.3.+'
+	serviceCompile 'paymark.common:database:0.1.+'
+	serviceCompile 'com.mangofactory:swagger-springmvc:0.8.5'
+	serviceCompile 'org.springframework:spring-context:4.0.6.RELEASE'
+	serviceCompile 'org.springframework:spring-webmvc:4.0.6.RELEASE'
+	serviceCompile 'org.springframework:spring-orm:4.0.6.RELEASE'
+	serviceCompile 'org.springframework.security:spring-security-web:3.2.5.RELEASE'
+	serviceCompile 'org.springframework.security:spring-security-ldap:3.2.5.RELEASE'
+	serviceCompile 'org.slf4j:jcl-over-slf4j:1.7.6'
+	serviceCompile 'org.hibernate:hibernate-validator:4.3.2.Final'
+	
+	testCompile 'junit:junit:4.12'
+	testCompile 'org.springframework:spring-test:4.0.6.RELEASE'
+	testCompile 'org.mockito:mockito-all:1.10.19'
+	testCompile 'javax.servlet:javax.servlet-api:3.1.0'
+	testCompile 'commons-dbcp:commons-dbcp:1.2.2'
+	testCompile 'commons-io:commons-io:2.4'
+	testCompile 'paymark.tools:java.testing:0.2.+'
+	
+	testRuntime 'org.hsqldb:hsqldb:2.3.2'
+	testRuntime 'org.hibernate:hibernate-validator:4.3.2.Final'
+}
+
+
