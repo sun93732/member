@@ -1,5 +1,5 @@
-CREATE SCHEMA member;
-CREATE TABLE member.member(
+CREATE SCHEMA if NOT EXISTS member;
+CREATE TABLE if NOT EXISTS member.member(
 	memberId CHAR(100),
 	role CHAR(100) NOT NULL,
 	`status` CHAR(100) NOT NULL,
