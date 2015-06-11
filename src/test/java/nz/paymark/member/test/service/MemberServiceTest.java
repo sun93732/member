@@ -12,6 +12,7 @@ import nz.paymark.member.api.MemberService;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.enumerator.MemberStatus;
 import nz.paymark.member.web.config.Constants;
+import nz.paymark.member.web.config.ServiceConfig;
 import nz.paymark.tools.testing.config.TestDatabaseConfig;
 
 import org.junit.After;
@@ -22,7 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { TestDatabaseConfig.class })
+@ContextConfiguration(classes = { TestDatabaseConfig.class, ServiceConfig.class})
 
 /***
  * 

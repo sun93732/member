@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
  *@description Member Service Implementation for handling different operations for member object
  */
 
-@Component
 public class MemberServiceImpl implements MemberService {
 	
 	@Resource private MemberDao memberDao;
