@@ -1,13 +1,15 @@
 package nz.paymark.member.web.client;
 
 import java.util.List;
-
-import org.apache.commons.lang3.NotImplementedException;
-import org.springframework.beans.factory.annotation.Value;
+import java.util.Optional;
 
 import nz.paymark.member.api.MemberService;
 import nz.paymark.member.model.Member;
+import nz.paymark.member.model.enumerator.MemberStatus;
 import nz.paymark.shared.rest.AbstractRestClient;
+
+import org.apache.commons.lang3.NotImplementedException;
+import org.springframework.beans.factory.annotation.Value;
 
 public class MemberClient extends AbstractRestClient<Member> implements MemberService{
 
@@ -36,27 +38,32 @@ public class MemberClient extends AbstractRestClient<Member> implements MemberSe
 	}
 
 	@Override
-	public List<Member> getContract(Member example) {
-		// TODO Auto-generated method stub
-		throw new NotImplementedException("");
-	}
-
-	@Override
 	public Member createMember(Member member) {
 		// TODO Auto-generated method stub
 		throw new NotImplementedException("");
 	}
 
 	@Override
-	public Member updateMember(String memberId, Member member) {
+	public Member updateMember(Member member) {
 		// TODO Auto-generated method stub
 		throw new NotImplementedException("");
 	}
 
 	@Override
-	public Member getMember(String memberId) {
+	public Optional<Member> findMemberById(String memberId) {
 		// TODO Auto-generated method stub
-		throw new NotImplementedException("");
+		return null;
 	}
 
+	@Override
+	public List<Member> searchMember(String role, MemberStatus status,
+			String orgnizationid, String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteMember(String memberId) {
+		// TODO Auto-generated method stub	
+	}
 }

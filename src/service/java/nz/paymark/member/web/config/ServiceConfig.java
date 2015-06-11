@@ -16,6 +16,12 @@ public class ServiceConfig {
 	protected final static String MEMBER_SCHEMA = "member";
 	protected final static String MEMBER_PACKAGE = "nz.paymark.member.model";
 	
+	
+	@Value("${member.ds.dialect}")
+	private String hibernateDialect;
+	
+	@Value("${member.ds.driver}")
+	private String dsDriver;
 	@Value("${member.ds.url}")
 	private String dsUrl;
 	@Value("${member.ds.user}")
@@ -38,8 +44,9 @@ public class ServiceConfig {
 		props.setInitialPoolSize(dsInitialPoolSize);
 		props.setMinPoolSize(dsMinPoolSize);
 		props.setMaxPoolSize(dsMaxPoolSize);
-		
-		props.setSchema(MEMBER_SCHEMA);
+		props.setDialect(hibernateDialect);
+		props.setDriver(dsDriver);
+		props.setSchema(MEMBER_SCHEMA);		
 		props.setPackageToScan(MEMBER_PACKAGE);
 		return props;
 	}

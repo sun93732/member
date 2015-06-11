@@ -25,7 +25,7 @@
     <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-all/1.10.19/539df70269cc254a58cccc5d8e43286b4a73bf30/mockito-all-1.10.19.jar!/" />
     <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.1.0/3cd63d075497751784b2fa84be59432f4905bf7c/javax.servlet-api-3.1.0.jar!/" />
     <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/b1b6ea3b7e4aa4f492509a4952029cd8e48019ad/commons-io-2.4.jar!/" />
-    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/paymark.tools/java.testing/0.2.1/2202e7e29705f95848f3a17ad3d9892e782cb154/java.testing-0.2.1.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/paymark.tools/java.testing/0.4.2/2216dc242546173f09f1d3399d6f023e62af54f7/java.testing-0.4.2.jar!/" />
     <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/paymark.tools/java.testing/0.2.1/4823fdd2f1a09d9fd9d09b74e05f4ff23b20ec24/java.testing-0.2.1-javadoc.jar!/" />
     <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/paymark.tools/java.testing/0.2.1/7e7aa7059491cdcbbdfdc1f4d9362ae31d63b2c4/java.testing-0.2.1-sources.jar!/" />
     <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hsqldb/hsqldb/2.3.2/970fd7b8f635e2c19305160459649569655b843c/hsqldb-2.3.2.jar!/" />
