@@ -118,7 +118,7 @@ public class MemberServiceController extends AbstractRestController {
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Member> handleUpdate(@PathVariable String id,
 			@RequestBody @Valid Member member) {
-		throwBadRequestIf(!id.equals(member.getMemberId()), "id",
+		throwBadRequestIf(!id.equals(member.getId()), "id",
 				"Both ids must be the same");
 		if (!service.findMemberById(id).isPresent()) {
 			return new ResponseEntity<Member>(HttpStatus.NOT_FOUND);

@@ -8,3 +8,6 @@ gradlew
 gradle
 gradlew.bat
 .jenkinsversion
+/.apt_generated/
+.DS_Store
+.factorypath

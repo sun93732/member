@@ -23,8 +23,6 @@ buildscript {
 import nz.paymark.tools.gradle.*
 apply plugin: BuildSettingsPlugin
 
-apply from: 'liquibase.gradle'
-
 task disableMain(type: DisableMainConfig){}
 task modelConf(type: JarConfig){
 	confName = 'model'
@@ -54,6 +52,7 @@ dependencies {
 	compile 'org.apache.commons:commons-lang3:3.3.2'
 	compile 'paymark.common:logging:0.3.+'
 	compile('paymark.common:shared:0.7.+')
+	compile files("./src/config/")
 	
 	// Statically generating classes
 	compileOnly 'org.hibernate:hibernate-jpamodelgen:4.3.8.Final'

@@ -24,7 +24,7 @@ public class Member extends AbstractRestModel{
 	private static final String MEMBER_TABLE_MEMBER_ID_COLUMN = "memberId";
 	
 	@IsUUID
-	private String memberId;
+	private String id;
 	
 	@Column(name = MEMBER_TABLE_ROLE_COLUMN)
 	private String role;
@@ -37,19 +37,17 @@ public class Member extends AbstractRestModel{
 	
 	@Column(name = MEMBER_TABLE_ORG_ID_COLUMN)
 	private String organisationId;
-
-	@Transient
-	@Override
-	public String getId() {
-		return getMemberId();
-	}
 	
 	@Id
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	@GeneratedValue(generator = "uuid")
 	@Column(name = MEMBER_TABLE_MEMBER_ID_COLUMN, unique = true)
-	public String getMemberId() {
-		return memberId;
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String memberId) {
+		this.id = memberId;
 	}
 
 	public String getRole() {
@@ -84,14 +82,10 @@ public class Member extends AbstractRestModel{
 		this.organisationId = organisationId;
 	}
 
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
-	}
-
-	public Member withMemberId(String memberId){
-		setMemberId(memberId); 
+	public Member withId(String memberId){
+		setId(memberId); 
 		return this;
-	}	
+	}
 
 	public Member withOrganisationId(String organisationId){
 		setOrganisationId(organisationId); 

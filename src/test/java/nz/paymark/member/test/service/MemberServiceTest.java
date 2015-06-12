@@ -11,7 +11,6 @@ import javax.annotation.Resource;
 import nz.paymark.member.api.MemberService;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.enumerator.MemberStatus;
-import nz.paymark.member.web.config.Constants;
 import nz.paymark.member.web.config.ServiceConfig;
 import nz.paymark.tools.testing.config.TestDatabaseConfig;
 
@@ -36,6 +35,10 @@ public class MemberServiceTest {
 	
 	@Resource
 	private MemberService service;
+	private static final String ORG_ID = "Test_Organization";
+	private static final String ROLE = "Test_Role";
+	private static final MemberStatus STATUS = MemberStatus.TEST_STATUS;
+	private static final String USER_ID = "Test_User";
 
 	/*
 	 * Private variables
@@ -50,10 +53,10 @@ public class MemberServiceTest {
 	
 	@Before
 	public void setUpClass(){
-		createTestMember.setOrganisationId(Constants.ORG_ID);
-		createTestMember.setRole(Constants.ROLE);
-		createTestMember.setStatus(Constants.STATUS);
-		createTestMember.setUserId(Constants.USER_ID);
+		createTestMember.setOrganisationId(ORG_ID);
+		createTestMember.setRole(ROLE);
+		createTestMember.setStatus(STATUS);
+		createTestMember.setUserId(USER_ID);
 		
 		/* Creating Test member in DB */
 		
@@ -106,9 +109,9 @@ public class MemberServiceTest {
 	public void testGetMember() {
 		Optional<Member> actual = service.findMemberById(member.getId());
 		assertEquals(MemberStatus.PROCESSING, actual.get().getStatus());
-		assertEquals(Constants.ORG_ID, actual.get().getOrganisationId());
-		assertEquals(Constants.ROLE, actual.get().getRole());
-		assertEquals(Constants.USER_ID, actual.get().getUserId());
+		assertEquals(ORG_ID, actual.get().getOrganisationId());
+		assertEquals(ROLE, actual.get().getRole());
+		assertEquals(USER_ID, actual.get().getUserId());
 	}
 	
 	/***
