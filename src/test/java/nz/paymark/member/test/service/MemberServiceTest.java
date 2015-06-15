@@ -37,7 +37,7 @@ public class MemberServiceTest {
 	private MemberService service;
 	private static final String ORG_ID = "Test_Organization";
 	private static final String ROLE = "Test_Role";
-	private static final MemberStatus STATUS = MemberStatus.TEST_STATUS;
+	private static final MemberStatus STATUS = MemberStatus.CREATED;
 	private static final String USER_ID = "Test_User";
 
 	/*

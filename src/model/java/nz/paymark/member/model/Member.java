@@ -21,7 +21,7 @@ public class Member extends AbstractRestModel{
 	private static final String MEMBER_TABLE_STATUS_COLUMN = "status";
 	private static final String MEMBER_TABLE_USER_ID_COLUMN = "userId";
 	private static final String MEMBER_TABLE_ORG_ID_COLUMN = "organisationId";
-	private static final String MEMBER_TABLE_MEMBER_ID_COLUMN = "memberId";
+	private static final String MEMBER_TABLE_MEMBER_ID_COLUMN = "id";
 	
 	@IsUUID
 	private String id;
@@ -46,8 +46,8 @@ public class Member extends AbstractRestModel{
 		return id;
 	}
 	
-	public void setId(String memberId) {
-		this.id = memberId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getRole() {
@@ -82,8 +82,8 @@ public class Member extends AbstractRestModel{
 		this.organisationId = organisationId;
 	}
 
-	public Member withId(String memberId){
-		setId(memberId); 
+	public Member withId(String id){
+		setId(id); 
 		return this;
 	}
 

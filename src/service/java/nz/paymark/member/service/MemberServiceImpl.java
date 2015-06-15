@@ -59,10 +59,10 @@ public class MemberServiceImpl implements MemberService {
 	 */
 
 	@Override
-	public Optional<Member> findMemberById(String memberId) {
-		throwBadRequestIf(memberId == null, "id", "Id should not be null.");
-		throwBadRequestIf(memberId.length() == 0 , "id", "Id should not be null.");
-		return memberDao.findMemberById(memberId);
+	public Optional<Member> findMemberById(String id) {
+		throwBadRequestIf(id == null, "id", "Id should not be null.");
+		throwBadRequestIf(id.length() == 0 , "id", "Id should not be null.");
+		return memberDao.findMemberById(id);
 	}
 	
 	/**
@@ -91,8 +91,8 @@ public class MemberServiceImpl implements MemberService {
 	 */
 
 	@Override
-	public void deleteMember(String memberId) {
+	public void deleteMember(String id) {
 		// TODO Auto-generated method stub
-		memberDao.deleteMember(memberId);
+		memberDao.deleteMember(id);
 	}
 }

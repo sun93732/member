@@ -36,7 +36,7 @@ public interface MemberService {
 	 * @return The retrieved member
 	 */
 	
-	Optional<Member> findMemberById(final String memberId);
+	Optional<Member> findMemberById(final String id);
 	
 	/**
 	 * 
@@ -55,5 +55,5 @@ public interface MemberService {
 	 * @param memberId
 	 *            The member to be deleted
 	 */
-	void deleteMember(String memberId);
+	void deleteMember(String id);
 }

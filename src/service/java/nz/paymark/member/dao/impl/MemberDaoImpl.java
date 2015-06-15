@@ -36,34 +36,24 @@ public class MemberDaoImpl implements MemberDao {
 
 	@Override
 	@Transactional(readOnly=false)
-	public Member createMember(Member Member) {
-		throwNullArgumentFor(Member);		
+	public Member createMember(Member member) {
+		throwNullArgumentFor(member);		
 		
-		return em.merge(Member);
+		return em.merge(member);
 	}
 	
 	@Override
 	@Transactional(readOnly=false)
-	public Member updateMember(Member Member) {
-		throwNullArgumentFor(Member);
-		return em.merge(Member);
+	public Member updateMember(Member member) {
+		throwNullArgumentFor(member);
+		return em.merge(member);
 	}
-	
-	@Override
-	@Transactional(readOnly=true)
-	public boolean touch() {
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-		cq.select(cb.count(cq.from(Member.class)));
-		return em.createQuery(cq).getSingleResult() > -1; 
-	}
-	
 
 	@Override
 	@Transactional(readOnly=true)
-	public Optional<Member> findMemberById(String MemberId) {
-		throwNullArgumentFor(MemberId);
-		Member member = em.find(Member.class, MemberId);
+	public Optional<Member> findMemberById(String id) {
+		throwNullArgumentFor(id);
+		Member member = em.find(Member.class, id);
 		if(null == member){
 			return Optional.empty();
 		}
@@ -73,11 +63,11 @@ public class MemberDaoImpl implements MemberDao {
 
 	@Override
 	@Transactional(readOnly=false)
-	public void deleteMember(String MemberId) {
-		throwNullArgumentFor(MemberId);
-        Member Member = em.find(Member.class, MemberId);
-        throwNotFoundIf(Member == null);
-        em.remove(Member);  		
+	public void deleteMember(String id) {
+		throwNullArgumentFor(id);
+        Member member = em.find(Member.class, id);
+        throwNotFoundIf(member == null);
+        em.remove(member);  		
 	}
 
 	@Override

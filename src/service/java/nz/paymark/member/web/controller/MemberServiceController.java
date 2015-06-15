@@ -105,7 +105,7 @@ public class MemberServiceController extends AbstractRestController {
 		}
 
 		return new ResponseEntity<List<Member>>(Collections.emptyList(),
-				HttpStatus.NOT_FOUND);
+				HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Update an existing member.", notes = "Returns the updated member.")

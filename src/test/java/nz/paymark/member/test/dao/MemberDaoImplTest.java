@@ -2,20 +2,41 @@ package nz.paymark.member.test.dao;
 
 import javax.annotation.Resource;
 
+import nz.paymark.member.api.MemberService;
 import nz.paymark.member.dao.MemberDao;
 import nz.paymark.member.model.Member;
-import nz.paymark.shared.validation.SimpleValidator;
+import nz.paymark.member.model.enumerator.MemberStatus;
 
 /*@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestDatabaseConfig.class })*/
-public class MemberDaoImplTest /*implements Validates<Member>*/ {
-	@Resource
-	private SimpleValidator validator;
-
+public class MemberDaoImplTest {
+	
 	@Resource
 	private MemberDao dao;
-
-	private Member testMember1;
+	@Resource
+	private MemberService service;
+	private static final String ORG_ID = "Test_Organization";
+	private static final String ROLE = "Test_Role";
+	private static final MemberStatus STATUS = MemberStatus.CREATED;
+	private static final String USER_ID = "Test_User";
+	private Member createTestMember = new Member();
+	
+	/***
+	 * First method that will be executed before any test method
+	 * It will create the test member in DB
+	 */
+	
+	/*@Before
+	public void setUpClass(){
+		createTestMember.setOrganisationId(ORG_ID);
+		createTestMember.setRole(ROLE);
+		createTestMember.setStatus(STATUS);
+		createTestMember.setUserId(USER_ID);
+		
+		 Creating Test member in DB 
+		
+		//member = service.createMember(createTestMember);
+	}*/
 
 	public void createAndSaveMember() {
 		//validate(testMember1);

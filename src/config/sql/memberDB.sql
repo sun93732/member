@@ -1,10 +1,9 @@
-CREATE SCHEMA member AUTHORIZATION sa
-
-CREATE TABLE member(
-    memberId varchar(100) NOT NULL,
-    role varchar(100) NOT NULL,
-    status varchar(100) NOT NULL,
-    organisationId varchar(100) NOT NULL,
-    userId varchar(100),
-    PRIMARY KEY (memberId)
-)
+CREATE SCHEMA if not exists member;
+CREATE TABLE if not exists member.member(
+	id CHAR(100),
+	role CHAR(100) NOT NULL,
+	`status` CHAR(100) NOT NULL,
+	organisationId CHAR(100) NOT NULL,
+	userId CHAR(100),
+	PRIMARY KEY (id)
+);

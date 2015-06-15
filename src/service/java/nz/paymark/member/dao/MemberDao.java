@@ -7,10 +7,10 @@ import nz.paymark.member.model.Member;
 import nz.paymark.member.model.MemberSearchCriteria;
 import nz.paymark.shared.dao.DataAccessObject;
 
-public interface MemberDao extends DataAccessObject<Member>{
-	public Optional<Member> findMemberById(String MemberId);
+public interface MemberDao {
+	public Optional<Member> findMemberById(String id);
 	public List<Member> searchMembers(MemberSearchCriteria searchCriteria);
-	public Member createMember(Member Member);
-	public Member updateMember(Member Member);
-	public void deleteMember(String MemberId);
+	public Member createMember(Member member);
+	public Member updateMember(Member member);
+	public void deleteMember(String id);
 }
