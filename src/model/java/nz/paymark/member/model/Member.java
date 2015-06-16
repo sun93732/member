@@ -19,8 +19,8 @@ public class Member extends AbstractRestModel{
 	
 	private static final String MEMBER_TABLE_ROLE_COLUMN = "role";
 	private static final String MEMBER_TABLE_STATUS_COLUMN = "status";
-	private static final String MEMBER_TABLE_USER_ID_COLUMN = "userId";
-	private static final String MEMBER_TABLE_ORG_ID_COLUMN = "organisationId";
+	private static final String MEMBER_TABLE_USER_ID_COLUMN = "user_id";
+	private static final String MEMBER_TABLE_ORG_ID_COLUMN = "organisation_id";
 	private static final String MEMBER_TABLE_MEMBER_ID_COLUMN = "id";
 	
 	@IsUUID
