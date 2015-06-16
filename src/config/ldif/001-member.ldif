@@ -1,0 +1,32 @@
+dn: uid=Member,ou=services,ou=api,dc=paymark,dc=co,dc=nz
+objectClass: top
+objectClass: simpleSecurityObject
+objectClass: account
+uid: Member
+userPassword: @member_service_ldap_password@
+
+# eReceipts Member Service Structure
+dn: uid=read,uid=Member,ou=services,ou=api,dc=paymark,dc=co,dc=nz
+objectClass: top
+objectClass: account
+uid: read
+
+dn: uid=create,uid=Member,ou=services,ou=api,dc=paymark,dc=co,dc=nz
+objectClass: top
+objectClass: account
+uid: create
+
+dn: uid=delete,uid=Member,ou=services,ou=api,dc=paymark,dc=co,dc=nz
+objectClass: top
+objectClass: account
+uid: delete
+
+dn: uid=update,uid=Member,ou=services,ou=api,dc=paymark,dc=co,dc=nz
+objectClass: top
+objectClass: account
+uid: update
+
+dn: uid=search,uid=Member,ou=services,ou=api,dc=paymark,dc=co,dc=nz
+objectClass: top
+objectClass: account
+uid: search

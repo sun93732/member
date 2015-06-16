@@ -22,3 +22,65 @@ buildscript {
 
 import nz.paymark.tools.gradle.*
 apply plugin: BuildSettingsPlugin
+
+task disableMain(type: DisableMainConfig){}
+task modelConf(type: JarConfig){
+	confName = 'model'
+}
+task clientConf(type: JarConfig) {
+	confName = 'client'
+	srcDirs = sourceSets.model.java.srcDirs
+	extendsConfs = [configurations.modelCompile]
+}
+task serviceConf(type: WarConfig) {
+	confName = 'service'
+	srcDirs = sourceSets.model.java.srcDirs
+	extendsConfs = [configurations.modelCompile]
+}
+
+task generateWithMethods(type: GenerateModelWithMethods) {
+	jobs = [
+		GeneratorJob.inSitu(file('./src/model/java/nz/paymark/member/model/Member.java')),
+		]
+}
+
+dependencies {
+	// Shared Libraries
+	
+	compile 'paymark.common:database:0.3.+'
+	compile 'org.slf4j:slf4j-log4j12:1.7.6'
+	compile 'org.apache.commons:commons-lang3:3.3.2'
+	compile 'paymark.common:logging:0.3.+'
+	compile('paymark.common:shared:0.10.+')
+	
+	// Statically generating classes
+	compileOnly 'org.hibernate:hibernate-jpamodelgen:4.3.8.Final'
+
+	
+	// Swagger
+	modelCompile ('com.mangofactory:swagger-springmvc:1.0.0') {
+		exclude group: 'com.google.guava'
+	}
+	
+	modelCompile 'org.hibernate:hibernate-core:4.3.8.Final'
+	modelCompile 'com.mangofactory:swagger-springmvc:1.0.0'
+	
+	serviceCompile 'paymark.common:webservice:0.3.+'
+	serviceCompile 'paymark.common:database:0.3.+'
+	serviceCompile 'org.hibernate:hibernate-entitymanager:4.3.8.Final'
+	serviceCompile 'org.hibernate:hibernate-validator:5.1.3.Final'
+	serviceCompile 'org.springframework:spring-context:4.1.6.RELEASE'
+	serviceCompile 'org.springframework:spring-orm:4.1.6.RELEASE'
+	serviceCompile 'mysql:mysql-connector-java:5.1.35'
+	
+	testCompile 'junit:junit:4.12'
+	testCompile 'org.springframework:spring-test:4.0.6.RELEASE'
+	testCompile 'org.mockito:mockito-all:1.10.19'
+	testCompile 'javax.servlet:javax.servlet-api:3.1.0'
+	testCompile 'commons-dbcp:commons-dbcp:1.2.2'
+	testCompile 'commons-io:commons-io:2.4'
+	testCompile 'paymark.tools:java.testing:0.4.+'
+	
+	testRuntime 'org.hsqldb:hsqldb:2.3.2'
+	testRuntime 'org.hibernate:hibernate-validator:4.3.2.Final'
+}
