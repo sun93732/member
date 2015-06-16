@@ -1,16 +1,19 @@
 package nz.paymark.member.test.service;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
 
 import nz.paymark.member.api.MemberService;
+import nz.paymark.member.dao.MemberDao;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.enumerator.MemberStatus;
+import nz.paymark.member.service.MemberServiceImpl;
 import nz.paymark.member.web.config.ServiceConfig;
 import nz.paymark.tools.testing.config.TestDatabaseConfig;
 
@@ -18,10 +21,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes = { TestDatabaseConfig.class, ServiceConfig.class})
 
 /***
@@ -43,8 +48,17 @@ public class MemberServiceTest {
 	/*
 	 * Private variables
 	 */
-	private Member member;
-	private Member createTestMember = new Member();
+	
+	@Mock
+    private MemberDao dao;
+	
+	@Mock
+	private EntityManager em;
+    
+    @InjectMocks
+    private MemberServiceImpl memberService;
+    
+	private Member createTestMember, returnedMember;
 	
 	/***
 	 * First method that will be executed before any test method
@@ -53,14 +67,12 @@ public class MemberServiceTest {
 	
 	@Before
 	public void setUpClass(){
-		createTestMember.setOrganisationId(ORG_ID);
-		createTestMember.setRole(ROLE);
-		createTestMember.setStatus(STATUS);
-		createTestMember.setUserId(USER_ID);
 		
 		/* Creating Test member in DB */
 		
-		member = service.createMember(createTestMember);
+		 returnedMember = new Member();
+	     when(dao.createMember(any())).thenReturn(returnedMember);
+	     createTestMember = memberService.createMember(new Member());
 	}
 	
 	@Test
@@ -78,16 +90,26 @@ public class MemberServiceTest {
 	
 	public void testCreateMember() {
 		
-		/* Retrieving recently created member from DB */
+		assertEquals(returnedMember, createTestMember);
 		
-		Optional<Member> retFromDB = service.findMemberById(member.getId());
+		createTestMember.setId(UUID.randomUUID().toString());
+		createTestMember.setOrganisationId(ORG_ID);
+		createTestMember.setRole(ROLE);
+		createTestMember.setStatus(STATUS);
+		createTestMember.setUserId(USER_ID);
+		
+		when(dao.createMember(createTestMember)).thenReturn(returnedMember);
+		createTestMember = memberService.createMember(new Member());
+		
+		when(dao.findMemberById(createTestMember.getId())).thenReturn(Optional.of(createTestMember));
+		Optional<Member> retFromDB = memberService.findMemberById(createTestMember.getId());
 		
 		/* Asserting both member objects */
 		
-		assertEquals(member.getOrganisationId(),retFromDB.get().getOrganisationId());
-		assertEquals(member.getRole(),retFromDB.get().getRole());
-		assertEquals(member.getStatus(),retFromDB.get().getStatus());
-		assertEquals(member.getUserId(),retFromDB.get().getUserId());
+		assertEquals(returnedMember.getOrganisationId(),retFromDB.get().getOrganisationId());
+		assertEquals(returnedMember.getRole(),retFromDB.get().getRole());
+		assertEquals(returnedMember.getStatus(),retFromDB.get().getStatus());
+		assertEquals(returnedMember.getUserId(),retFromDB.get().getUserId());
 	}
 	
 	/***
@@ -95,10 +117,12 @@ public class MemberServiceTest {
 	 */
 
 	public void testUpdateMember() {
-		Optional<Member> expected = service.findMemberById(member.getId());
+		when(dao.findMemberById(createTestMember.getId())).thenReturn(Optional.of(createTestMember));
+		Optional<Member> expected = memberService.findMemberById(createTestMember.getId());
 		expected.get().setStatus(MemberStatus.PROCESSING);
-
-		Member actual = service.updateMember(expected.get());
+		
+		when(dao.updateMember(createTestMember)).thenReturn(createTestMember);
+		Member actual = memberService.updateMember(expected.get());
 		assertEquals(MemberStatus.PROCESSING, actual.getStatus());
 	}
 	
@@ -107,7 +131,8 @@ public class MemberServiceTest {
 	 */
 
 	public void testGetMember() {
-		Optional<Member> actual = service.findMemberById(member.getId());
+		when(dao.findMemberById(createTestMember.getId())).thenReturn(Optional.of(createTestMember));
+		Optional<Member> actual = memberService.findMemberById(createTestMember.getId());
 		assertEquals(MemberStatus.PROCESSING, actual.get().getStatus());
 		assertEquals(ORG_ID, actual.get().getOrganisationId());
 		assertEquals(ROLE, actual.get().getRole());
@@ -119,20 +144,11 @@ public class MemberServiceTest {
 	 */
 
 	public void testDeleteMember() {
-		List<Member> memberList = new ArrayList<Member>();
-		Optional<Member> retFromDB = service.findMemberById(member.getId()); // It should return 1 records
-		memberList.add(retFromDB.get());
-		assertEquals(1, memberList.size());
-		memberList.remove(retFromDB.get());
-
-		service.deleteMember(member.getId());
+		when(dao.findMemberById(createTestMember.getId())).thenReturn(Optional.empty());
+		memberService.deleteMember(createTestMember.getId());
 		
-		retFromDB = service.findMemberById(member.getId()); // It should return 0 records
-		assertEquals(false, retFromDB.isPresent());
-		
-		/* Creating Test member again in DB */
-		
-		member = service.createMember(createTestMember);	
+		when(dao.findMemberById(createTestMember.getId())).thenReturn(Optional.of(createTestMember));
+		memberService.findMemberById(createTestMember.getId());
 	}
 	
 	/***
@@ -140,18 +156,8 @@ public class MemberServiceTest {
 	 */
 
 	public void testSearchMembersWithCriteria() {
-		List<Member> actual = service.searchMember(member.getRole(), member.getStatus(), null, null);
-		assertEquals(1, actual.size());
-		
-		service.deleteMember(member.getId());
-		List<Member> retFromDB = service.searchMember(member.getRole(), member.getStatus(), null, null); // It should return 0 records
-		assertEquals(0, retFromDB.size());
-		
-		/* Creating Test member again in DB */
-		
-		member = service.createMember(createTestMember);
-		
-		
+		when(dao.findMemberById(createTestMember.getId())).thenReturn(Optional.of(createTestMember));
+		memberService.searchMember(createTestMember.getRole(), createTestMember.getStatus(), null, null);
 	}
 	
 	/***
@@ -162,8 +168,7 @@ public class MemberServiceTest {
 	
 	@After
 	public void tearDownClass(){
-		/* Deleting the Test member from database */
-		
-		service.deleteMember(member.getId());	
+		when(dao.findMemberById(createTestMember.getId())).thenReturn(Optional.empty());
+		memberService.deleteMember(createTestMember.getId());	
 	}
 }

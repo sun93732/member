@@ -1,94 +1,135 @@
 package nz.paymark.member.test.dao;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
+import static org.springframework.util.Assert.notNull;
+
+import java.util.Optional;
+import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
-import nz.paymark.member.api.MemberService;
+import nz.paymark.logging.LoggerFactory;
 import nz.paymark.member.dao.MemberDao;
+import nz.paymark.member.dao.impl.MemberDaoImpl;
 import nz.paymark.member.model.Member;
+import nz.paymark.member.model.MemberSearchCriteria;
 import nz.paymark.member.model.enumerator.MemberStatus;
+import nz.paymark.member.test.model.MemberModelTest;
+import nz.paymark.tools.testing.config.TestDatabaseConfig;
 
-/*@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { TestDatabaseConfig.class })*/
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.slf4j.Logger;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.annotation.Transactional;
+
+@RunWith(MockitoJUnitRunner.class)
+@ContextConfiguration(classes = { TestDatabaseConfig.class })
 public class MemberDaoImplTest {
 	
+	private static Logger logger = LoggerFactory.getLogger();
+	
 	@Resource
-	private MemberDao dao;
-	@Resource
-	private MemberService service;
+	private Member createTestMember;
+	private static final String MEMBER_ID = UUID.randomUUID().toString();
 	private static final String ORG_ID = "Test_Organization";
 	private static final String ROLE = "Test_Role";
-	private static final MemberStatus STATUS = MemberStatus.CREATED;
 	private static final String USER_ID = "Test_User";
-	private Member createTestMember = new Member();
+	
+	@Mock
+    private MemberSearchCriteria searchCriteria;
+	@Mock
+	private EntityManager em;
+	
+	@InjectMocks
+    private MemberDaoImpl memberDao;
 	
 	/***
 	 * First method that will be executed before any test method
 	 * It will create the test member in DB
 	 */
 	
-	/*@Before
+	@Before
 	public void setUpClass(){
-		createTestMember.setOrganisationId(ORG_ID);
-		createTestMember.setRole(ROLE);
-		createTestMember.setStatus(STATUS);
-		createTestMember.setUserId(USER_ID);
-		
-		 Creating Test member in DB 
-		
-		//member = service.createMember(createTestMember);
-	}*/
-
-	public void createAndSaveMember() {
-		//validate(testMember1);
-		/*Payment p = PaymentModelTest.createPayment(status, creationTime,
-				modificationTime, card, threeDomainSecure, merchant,
-				transaction);
-		p = dao.createPayment(p);
-		notNull(p.getId());
-		return p;*/
-	}
-
-	//@Test
-	//@Transactional
-	public void testGetMember() {
-		//validate(testMember1);
-		/*Payment actual = dao.getPayment(testPayment1.getId());
-		assertEquals(testPayment1.getId(), actual.getId());*/
-	}
-
-	//@Test
-	//@Transactional
-	public void testCreateMember() {
-		//validate(testMember1);
-		/*Member actual = dao.createMember(unsavedMember1);
-		assertNotNull(actual);
-		assertNotNull(actual.getId());*/
+		try{
+			createTestMember = createAndSaveMember(MEMBER_ID, ORG_ID, ROLE, MemberStatus.CREATED, USER_ID, memberDao);
+		}catch (ConstraintViolationException e) {
+			for (ConstraintViolation<?> v : e.getConstraintViolations()) {
+				logger.error("Constraint violation! {} : {} = {}",
+						v.getPropertyPath(), v.getInvalidValue());
+			}
+			throw e;
+		} catch (Exception e) {
+			logger.error("Error creating fixture data: {}", e.getMessage());
+			throw e;
+		}
 	}
 	
-	//@Test
-	//@Transactional
+	public Member createAndSaveMember(String Member_Id, String Org_Id, String Role, MemberStatus Status, String User_Id, MemberDao memberDao){
+		Member createdMember = MemberModelTest.createMember(Member_Id, Org_Id, Role, Status, User_Id);
+		when(em.merge(createdMember)).thenReturn(createdMember);
+		createdMember = memberDao.createMember(createdMember);
+		notNull(createdMember.getId());
+		return createdMember;
+	}
+	
+	@Test
+	@Transactional
+	public void testGetMember() {
+		when(em.find(Member.class,createTestMember.getId())).thenReturn(createTestMember);
+		Optional<Member> retFromDB = memberDao.findMemberById(createTestMember.getId());
+		assertEquals(createTestMember.getId(), retFromDB.get().getId());
+	}
+	
+	@Test
+	@Transactional
+	public void testGetMemberWithRetrieveDetails() {
+		when(em.find(Member.class,createTestMember)).thenReturn(createTestMember);
+		Optional<Member> retFromDB = memberDao.findMemberById(createTestMember.getId());
+		assertEquals(retFromDB, Optional.empty());
+	}
+	
+	@Test(expected = NullPointerException.class)
+	@Transactional
+	public void testGetMemberFailOnNullMemberId() {
+		when(em.find(Member.class,createTestMember)).thenReturn(createTestMember);
+		memberDao.findMemberById((String) null);
+	}
+	
+	@Test
+	@Transactional
+	public void testCreateMember() {
+		when(em.merge(createTestMember)).thenReturn(createTestMember);
+		Member actual = memberDao.createMember(createTestMember);
+		assertNotNull(actual);
+		assertNotNull(actual.getId());
+	}
+	
+	@Test
+	@Transactional
 	public void testUpdateMember() throws InterruptedException {
-		//validate(testMember1);
-		/*testMember3.setStatus(MemberStatus.PROCESSING);
-		Member actual = dao.updateMember(testMember3);
+		createTestMember.setStatus(MemberStatus.PROCESSING);
+		when(em.merge(createTestMember)).thenReturn(createTestMember);
+		Member actual = memberDao.updateMember(createTestMember);
 
 		assertNotNull(actual);
-		assertEquals(testMember3.getId(), actual.getId());
-		assertEquals(testMember3.getStatus(), actual.getStatus());*/
+		assertEquals(createTestMember.getId(), actual.getId());
+		assertEquals(createTestMember.getStatus(), actual.getStatus());
 	}
-
-	//@Test
-	//@Transactional
+	
+	@Test
+	@Transactional
 	public void testDeleteMember() {
-		//validate(testMember1);
-		/*String id = testMember5.getId();
-		dao.deleteMember(id);
-
-		try {
-			dao.getMember(id);
-		} catch (RecordNotFoundException e) {
-			return;
-		}
-		fail();*/
+		String id = UUID.randomUUID().toString();
+		when(em.find(Member.class,id)).thenReturn(createTestMember);
+		memberDao.deleteMember(id);
 	}
 }
