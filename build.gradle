@@ -37,6 +37,8 @@ task serviceConf(type: WarConfig) {
 	srcDirs = sourceSets.model.java.srcDirs
 	extendsConfs = [configurations.modelCompile]
 }
+awsdeployment.enableUploadToS3(project.tasks.serviceWar)
+
 
 task generateWithMethods(type: GenerateModelWithMethods) {
 	jobs = [
