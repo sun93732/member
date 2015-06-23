@@ -23,8 +23,6 @@ buildscript {
 import nz.paymark.tools.gradle.*
 apply plugin: BuildSettingsPlugin
 
-awsdeployment.enableUploadToS3(project.tasks.serviceWar)
-
 task disableMain(type: DisableMainConfig){}
 task modelConf(type: JarConfig){
 	confName = 'model'
@@ -39,6 +37,8 @@ task serviceConf(type: WarConfig) {
 	srcDirs = sourceSets.model.java.srcDirs
 	extendsConfs = [configurations.modelCompile]
 }
+awsdeployment.enableUploadToS3(project.tasks.serviceWar)
+
 
 task generateWithMethods(type: GenerateModelWithMethods) {
 	jobs = [
