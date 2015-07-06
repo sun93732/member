@@ -1,7 +1,7 @@
 package nz.paymark.member.web.config;
 
 
-import nz.paymark.database.shared.config.DatabaseProperties;
+import nz.paymark.shared.database.config.DatabaseProperties;
 import nz.paymark.member.api.MemberService;
 import nz.paymark.member.service.MemberServiceImpl;
 
@@ -49,10 +49,5 @@ public class ServiceConfig {
 		props.setSchema(MEMBER_SCHEMA);		
 		props.setPackageToScan(MEMBER_PACKAGE);
 		return props;
-	}
-	
-	@Bean
-	public MemberService memberService() {
-		return new MemberServiceImpl();
 	}
 }

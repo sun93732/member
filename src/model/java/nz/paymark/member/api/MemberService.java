@@ -1,10 +1,9 @@
 package nz.paymark.member.api;
 
 import java.util.List;
-import java.util.Optional;
 
 import nz.paymark.member.model.Member;
-import nz.paymark.member.model.enumerator.MemberStatus;
+import nz.paymark.member.model.MemberSearchCriteria;
 
 /***
  * 
@@ -19,7 +18,7 @@ public interface MemberService {
 	 * @param member - Member object containing attributes (ORG_ID, USER_ID, ROLE ETC.)
 	 * @return The member that was created or exception if the member is not created.
 	 */
-	Member createMember(final Member member);
+	Member createMember(Member member);
 	
 	/**
 	 * 
@@ -28,7 +27,7 @@ public interface MemberService {
 	 * @return The member that was updated or exception if the member is not updated.
 	 */
 	
-	Member updateMember(final Member member);
+	Member updateMember(Member member);
 	
 	/**
 	 * 
@@ -36,18 +35,24 @@ public interface MemberService {
 	 * @return The retrieved member
 	 */
 	
-	Optional<Member> findMemberById(final String id);
+	Member getMember(String id);
 	
 	/**
+	 * Returns a list of the Members found by the search
 	 * 
-	 * @param role - For searching members based on role
-	 * @param status - For searching members based on status
-	 * @param organizationId - For searching members based on organization id
-	 * @param userId - For searching members based on user id
-	 * @return The retrieved member based on search criteria or null
+	 * @param criteria A MemberSearchCriteria instance
+	 * @return A list of Members
 	 */
 	
-	List<Member> searchMember(final String role, final MemberStatus status, final String orgnizationid, final String userId);
+	List<Member> searchMembersByCriteria(MemberSearchCriteria criteria);
+	
+	/**
+	 * Returns a list of the Members found by the search
+	 * 
+	 * @param ids A list of IDs to search for
+	 * @return A list of Members
+	 */
+	List<Member> searchMembers(List<String> ids);
 	
 	/**
 	 * Delete an existing member

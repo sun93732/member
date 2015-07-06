@@ -1,17 +1,16 @@
 package nz.paymark.member.service;
 
-import static nz.paymark.shared.validation.util.ExceptionThrower.throwBadRequestIf;
+import static nz.paymark.client.shared.web.exception.WebExceptionThrower.throwBadRequestIf;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import nz.paymark.client.shared.web.exception.RecordNotFoundException;
 import nz.paymark.member.api.MemberService;
 import nz.paymark.member.dao.MemberDao;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.MemberSearchCriteria;
-import nz.paymark.member.model.enumerator.MemberStatus;
 
 import org.springframework.stereotype.Component;
 
@@ -21,9 +20,11 @@ import org.springframework.stereotype.Component;
  *@description Member Service Implementation for handling different operations for member object
  */
 
+@Component
 public class MemberServiceImpl implements MemberService {
 	
-	@Resource private MemberDao memberDao;
+	@Resource
+	MemberDao memberDao;
 
 	/**
 	 * 
@@ -33,7 +34,6 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public Member createMember(Member member) {
-		// TODO Auto-generated method stub
 		Member newMember = memberDao.createMember(member);
 		return newMember;
 	}
@@ -47,8 +47,11 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public Member updateMember(Member member) {
-		// TODO Auto-generated method stub
 		throwBadRequestIf(member.getId() == null, "id", "Id should not be null.");
+		Member dbMember = memberDao.getMember(member.getId());
+		if (dbMember == null) {
+			throw new RecordNotFoundException();
+		}
 		return memberDao.updateMember(member);
 	}
 	
@@ -59,31 +62,39 @@ public class MemberServiceImpl implements MemberService {
 	 */
 
 	@Override
-	public Optional<Member> findMemberById(String id) {
+	public Member getMember(String id) throws RecordNotFoundException {
 		throwBadRequestIf(id == null, "id", "Id should not be null.");
 		throwBadRequestIf(id.length() == 0 , "id", "Id should not be null.");
-		return memberDao.findMemberById(id);
+		Member member = memberDao.getMember(id);
+        if (member == null)
+            throw new RecordNotFoundException();
+        return member;
 	}
 	
 	/**
+	 * Returns a list of the Members found by the search
 	 * 
-	 * @param role - For searching members based on role
-	 * @param status - For searching members based on status
-	 * @param organizationId - For searching members based on organization id
-	 * @param userId - For searching members based on user id
-	 * @return The retrieved member based on search criteria or null
+	 * @param ids A list of IDs to search for
+	 * @return A list of Members
 	 */
 
 	@Override
-	public List<Member> searchMember(String role, MemberStatus status,
-			String organisationId, String userId) {
-		MemberSearchCriteria criteria = new MemberSearchCriteria();
-		criteria.setRole(role);
-		criteria.setOrganisationId(organisationId);
-		criteria.setStatus(status);
-		criteria.setUserId(userId);
-		return memberDao.searchMembers(criteria);
+	public List<Member> searchMembers(List<String> ids) {
+		return memberDao.searchMembers(ids);
 	}
+	
+	/**
+	 * Returns a list of the Members found by the search
+	 * 
+	 * @param criteria A MemberSearchCriteria instance
+	 * @return A list of Members
+	 */
+	
+	@Override
+    public List<Member> searchMembersByCriteria(
+            MemberSearchCriteria criteria) {
+        return memberDao.searchMembersByCriteria(criteria);
+    }
 	
 	/**
 	 * 
@@ -92,7 +103,6 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void deleteMember(String id) {
-		// TODO Auto-generated method stub
 		memberDao.deleteMember(id);
 	}
 }
