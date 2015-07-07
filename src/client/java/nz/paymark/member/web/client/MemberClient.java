@@ -4,29 +4,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import nz.paymark.client.shared.rest.AbstractRestClient;
 import nz.paymark.member.api.MemberService;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.MemberSearchCriteria;
-import nz.paymark.client.shared.rest.AbstractRestClient;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.HttpClientErrorException;
 
-public class MemberClient extends AbstractRestClient<Member> implements MemberService{
+public class MemberClient extends AbstractRestClient<Member> implements
+		MemberService {
 
 	@Value("${member.service.partner}")
 	private String headerPartner;
-	
+
 	@Value("${member.service.auth}")
 	private String headerAuth;
-	
+
 	@Value("${member.service.contract.get}")
 	private String getUrl;
-	
+
 	@Override
 	protected String getHeaderPartner() {
 		return headerPartner;
@@ -58,41 +57,54 @@ public class MemberClient extends AbstractRestClient<Member> implements MemberSe
 	}
 
 	@Override
-    public List<Member> searchMembers(List<String> ids) {
-        HttpEntity<?> request = new HttpEntity<>(getHeaders());
-        List<String> requestParameters = new ArrayList<String>();
-        if (ids != null && ids.size() > 0) {
-            requestParameters.add("id="
-                    + StringUtils.collectionToDelimitedString(ids, ","));
-        }
-        HttpEntity<Member[]> response = getRestTemplate().exchange(
-        		getUrl
-                        + "?"
-                        + StringUtils.collectionToDelimitedString(
-                                requestParameters, "&"), HttpMethod.GET,
-                request, Member[].class);
-        return Arrays.asList(response.getBody());
-    }
-	
+	public List<Member> searchMembers(List<String> ids) {
+		HttpEntity<?> request = new HttpEntity<>(getHeaders());
+		List<String> requestParameters = new ArrayList<String>();
+		if (ids != null && ids.size() > 0) {
+			requestParameters.add("id="
+					+ StringUtils.collectionToDelimitedString(ids, ","));
+		}
+		HttpEntity<Member[]> response = getRestTemplate().exchange(
+				getUrl
+						+ "?"
+						+ StringUtils.collectionToDelimitedString(
+								requestParameters, "&"), HttpMethod.GET,
+				request, Member[].class);
+		return Arrays.asList(response.getBody());
+	}
+
 	@Override
-    public List<Member> searchMembersByCriteria(
-            MemberSearchCriteria criteria) {
-        try {
-            HttpEntity<String> request = new HttpEntity<String>(getHeaders());
-            HttpEntity<Member[]> response = getRestTemplate().exchange(
-                    getUrl, HttpMethod.GET, request, Member[].class,
-                    criteria);
-            return Arrays.asList(response.getBody());
-        } catch (HttpClientErrorException ex) {
-            if (HttpStatus.NOT_FOUND.equals(ex.getStatusCode())) {
-                return null;
-            }
-            throw ex;
-        }
-    }
+	public List<Member> searchMembersByCriteria(MemberSearchCriteria criteria) {
+		HttpEntity<?> request = new HttpEntity<>(getHeaders());
+		List<String> requestParameters = new ArrayList<String>();
+		if (criteria.getId() != null) {
+			requestParameters.add("id" + criteria.getId());
+		}
+
+		if (criteria.getUserId() != null) {
+			requestParameters.add("userId" + criteria.getUserId());
+		}
+
+		if (criteria.getOrganisationId() != null) {
+			requestParameters.add("organisationId"
+					+ criteria.getOrganisationId());
+		}
+
+		if (criteria.getRole() != null) {
+			requestParameters.add("role" + criteria.getRole());
+		}
+
+		HttpEntity<Member[]> response = getRestTemplate().exchange(
+				getUrl
+						+ "?"
+						+ StringUtils.collectionToDelimitedString(
+								requestParameters, "&"), HttpMethod.GET,
+				request, Member[].class);
+		return Arrays.asList(response.getBody());
+	}
 
 	@Override
 	public void deleteMember(String memberId) {
-		// TODO Auto-generated method stub	
+		deleteEntity(memberId);
 	}
 }
