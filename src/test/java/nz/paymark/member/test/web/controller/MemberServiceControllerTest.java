@@ -1,143 +1,170 @@
 package nz.paymark.member.test.web.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
+import nz.paymark.client.shared.web.exception.BadRequestException;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.MemberSearchCriteria;
+import nz.paymark.member.model.enumerator.MemberRoles;
 import nz.paymark.member.service.MemberServiceImpl;
 import nz.paymark.member.web.controller.MemberServiceController;
 
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
-@Ignore
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+
 @RunWith(MockitoJUnitRunner.class)
 public class MemberServiceControllerTest {
+	@Mock
+	MemberServiceImpl service;
 
-	@Mock
-	private MemberServiceImpl memberService;
-	
-	@Mock
-	private MemberSearchCriteria criteria;
-	
 	@InjectMocks
-	private MemberServiceController memberController;
-	
-	private String memberId = "b2c17a86-d46d-4c4c-8c3d-3890d0bd094a";
+	MemberServiceController controller;
 
-	/*@Test
-	public void testCreateMember() {
+	Member newMember, savedMember;
+
+	@Before
+	public void onSetUp() {
+		newMember = new Member();
+		newMember.setId(UUID.randomUUID().toString());	
+		newMember.setUserId(UUID.randomUUID().toString());
+		newMember.setOrganisationId(UUID.randomUUID().toString());
+		newMember.setRole(MemberRoles.EXPENSE_SUBMITTER);
+		newMember.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
+		newMember.setModifiedTime(newMember.getCreationTime());
 		
-		Member expected = new Member();
-	
-		when(memberService.createMember(expected)).thenReturn(expected);
-
-		Member actual = memberController.handleCreate(null, null, null, expected).getBody();
-        assertNotNull(actual);
-		assertEquals(expected, actual);
+		savedMember = new Member();
+		savedMember.setId(UUID.randomUUID().toString());	
+		savedMember.setUserId(UUID.randomUUID().toString());
+		savedMember.setOrganisationId(UUID.randomUUID().toString());
+		savedMember.setRole(MemberRoles.EXPENSE_SUBMITTER);
+		savedMember.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
+		savedMember.setModifiedTime(newMember.getCreationTime());
 	}
 
 	@Test
-	public void testGetMember() {
-		
-		Member expected = new Member();
-		expected.setId(memberId);
-		Optional<Member> expectedOpt = Optional.of(expected);
+	public void canCreate() {
+		when(service.createMember(any())).thenReturn(savedMember);
 
-		when(memberService.findMemberById(expected.getId())).thenReturn(expectedOpt);
+		Member controllerMember = controller.handleCreate(null, null, null, newMember);
 
-		Member actual = memberController.handleRetrieve(null, null, null, memberId).getBody();
-		
-		assertNotNull(actual);
-		assertEquals(expected, actual);
+		verify(service, times(1)).createMember(newMember);
+
+		assertEquals(savedMember.getId(), controllerMember.getId());
+		assertEquals(savedMember.getUserId(), controllerMember.getUserId());
+		assertEquals(savedMember.getOrganisationId(), controllerMember.getOrganisationId());
+		assertEquals(savedMember.getRole(), controllerMember.getRole());
 	}
 
 	@Test
-	public void testUpdateMember() {
-	
-		Member expected = new Member();
-		expected.setId(memberId);
-		expected.setOrganisationId("sample");
-		expected.setStatus(MemberStatus.COMPLETE);
-		expected.setUserId(memberId);
-		when(memberService.findMemberById(expected.getId())).thenReturn(Optional.of(expected));
-		
-		when(memberService.updateMember(expected)).thenReturn(expected);
-		Member actual = memberController.handleUpdate(memberId, expected).getBody();
-		
-		assertNotNull(actual);
-		assertEquals(expected, actual);
+	public void canGet() {
+		when(service.getMember(any())).thenReturn(savedMember);
+
+		String uuid = UUID.randomUUID().toString();
+
+		Member controllerMember = controller.handleRetrieve(uuid);
+
+		verify(service, times(1)).getMember(uuid);
+
+		assertEquals(savedMember, controllerMember);
 	}
 
 	@Test
-	public void testDeleteMember() {
-		Member expected = new Member();
-		expected.setId(memberId);
-		expected.setOrganisationId("ClearPoint");
-		expected.setRole("Admin");
-		expected.setStatus(MemberStatus.COMPLETE);
-		expected.setUserId(memberId);
-		when(memberService.findMemberById(expected.getId())).thenReturn(Optional.of(expected));
-		memberController.handleDelete(memberId);
-
-		verify(memberService, times(1)).deleteMember(memberId);
+	public void canSearchMemberById() {
+		List<Member> members = new ArrayList<>();
+		Member newMemberCreated = new Member();
+		newMemberCreated.setId(UUID.randomUUID().toString());	
+		newMemberCreated.setUserId(UUID.randomUUID().toString());
+		newMemberCreated.setOrganisationId(UUID.randomUUID().toString());
+		newMemberCreated.setRole(MemberRoles.EXPENSE_SUBMITTER);
+		newMemberCreated.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
+		newMemberCreated.setModifiedTime(newMember.getCreationTime());
 		
+		Member savedMemberCreated = new Member();
+		savedMemberCreated.setId(UUID.randomUUID().toString());	
+		savedMemberCreated.setUserId(UUID.randomUUID().toString());
+		savedMemberCreated.setOrganisationId(UUID.randomUUID().toString());
+		savedMemberCreated.setRole(MemberRoles.EXPENSE_SUBMITTER);
+		savedMemberCreated.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
+		savedMemberCreated.setModifiedTime(newMember.getCreationTime());
+		
+		members.add(newMemberCreated);
+		members.add(savedMemberCreated);
+
+		List<String> idsToSearchFor = new ArrayList<>();
+		idsToSearchFor.add(members.get(0).getId());
+		idsToSearchFor.add(members.get(1).getId());
+
+		when(service.searchMembers(any())).thenReturn(members);
+
+		List<Member> userResults = controller.handleSearch(idsToSearchFor);
+
+		verify(service, times(1)).searchMembers(idsToSearchFor);
+
+		assertEquals(2, userResults.size());
 	}
 
 	@Test
-	public void testSearchMember() {
-	
-		List<Member> expected = new ArrayList<Member>();
-		Member member1  = new Member();
-		member1.setId(memberId);
-		member1.setOrganisationId("ClearPoint");
-		member1.setRole("Admin");
-		member1.setStatus(MemberStatus.COMPLETE);
-		member1.setUserId(memberId);
+	public void canSearchMemberByCriteria() {
+		List<Member> members = new ArrayList<>();
+		Member newMemberCreated = new Member();
+		newMemberCreated.setId(UUID.randomUUID().toString());	
+		newMemberCreated.setUserId(UUID.randomUUID().toString());
+		newMemberCreated.setOrganisationId(UUID.randomUUID().toString());
+		newMemberCreated.setRole(MemberRoles.EXPENSE_SUBMITTER);
+		newMemberCreated.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
+		newMemberCreated.setModifiedTime(newMember.getCreationTime());
 		
-		Member member2 = new Member();
-		String memberId2 =  UUID.randomUUID().toString();
-		member2.setId(memberId2);
-		member2.setOrganisationId("Paymark");
-		member2.setRole("Admin");
-		member2.setStatus(MemberStatus.COMPLETE);
-		member2.setUserId(memberId2);
+		Member savedMemberCreated = new Member();
+		savedMemberCreated.setId(UUID.randomUUID().toString());	
+		savedMemberCreated.setUserId(UUID.randomUUID().toString());
+		savedMemberCreated.setOrganisationId(UUID.randomUUID().toString());
+		savedMemberCreated.setRole(MemberRoles.EXPENSE_SUBMITTER);
+		savedMemberCreated.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
+		savedMemberCreated.setModifiedTime(newMember.getCreationTime());
 		
-		expected.add(member2);
-		expected.add(member1);
-		when(memberService.searchMember(null, null, null, null)).thenReturn(expected);
-		
-		when(criteria.getOrganisationId()).thenReturn(null);
-		when(criteria.getRole()).thenReturn(null);
-		when(criteria.getStatus()).thenReturn(null);
-		when(criteria.getUserId()).thenReturn(null);
-		List<Member> actual = memberController.handleSearch(null, null, criteria).getBody();
-		assertNotNull(actual);
-		assertEquals(expected, actual);	
+		members.add(newMemberCreated);
+		members.add(savedMemberCreated);
+
+		String userId = newMemberCreated.getUserId();
+		String organisationId = newMemberCreated.getOrganisationId();
+		MemberRoles role = newMemberCreated.getRole();
+		LocalDateTime cTime = newMemberCreated.getCreationTime();
+		LocalDateTime mTime = newMemberCreated.getModifiedTime();
+
+		MemberSearchCriteria criteria = new MemberSearchCriteria(userId,
+				organisationId, role);
+		when(service.searchMembersByCriteria(any())).thenReturn(members);
+
+		List<Member> memberResults = controller.handleSearchCriteria(
+				criteria.getUserId(), criteria.getOrganisationId(),
+				criteria.getRole(), cTime,null, mTime, null);
+
+		assertEquals(2, memberResults.size());
 	}
-	
+
 	@Test
-	public void testDeleteMemberNotFound() {
-		
-		String randomId = UUID.randomUUID().toString();
-		
-		when(memberService.findMemberById(randomId)).thenReturn(Optional.empty());
-		ResponseEntity<String> resp = memberController.handleDelete(randomId);
-		assertEquals(resp.getStatusCode(), HttpStatus.NOT_FOUND);
-	}	*/
+	public void canDeleteMember() {
+		String uuid = UUID.randomUUID().toString();
+
+		controller.handleDelete(uuid);
+
+		verify(service, times(1)).deleteMember(uuid);
+	}
+
+	@Test(expected = BadRequestException.class)
+	public void throwsExceptionWhenMismatchedIds() {
+		controller.handleUpdate(UUID.randomUUID().toString(), savedMember);
+	}
 }

@@ -2,6 +2,7 @@ package nz.paymark.member.dao.impl;
 
 import static nz.paymark.shared.models.validation.util.GeneralExceptionThrower.throwNullArgumentFor;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,7 +58,7 @@ public class MemberDaoImpl implements MemberDao {
 	@Transactional(readOnly=false)
 	public Member createMember(Member member) {
 		throwNullArgumentFor(member);		
-		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
         member.setCreationTime(now);
         member.setModifiedTime(now);
         validate(member);

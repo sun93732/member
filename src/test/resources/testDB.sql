@@ -1,5 +1,6 @@
-CREATE SCHEMA if not exists member;
-CREATE TABLE if not exists member.member(
+CREATE SCHEMA member AUTHORIZATION sa
+
+CREATE TABLE member (
 	id CHAR(36),
 	user_id CHAR(36) NOT NULL,
 	organisation_id CHAR(36) NOT NULL,

@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
@@ -23,13 +24,13 @@ import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
 @Entity
-@Table(name = "member", schema="member")
+@Table(name = "member", schema="member", uniqueConstraints=@UniqueConstraint(columnNames={"user_Id", "organisation_Id"}))
 @ApiModel(value = "Member", description = "Details of Members.")
 public class Member extends AbstractRestModel{
 	
 	private static final String MEMBER_TABLE_MEMBER_ID_COLUMN = "id";
-	private static final String MEMBER_TABLE_USER_ID_COLUMN = "userId";
-	private static final String MEMBER_TABLE_ORG_ID_COLUMN = "organisationId";
+	private static final String MEMBER_TABLE_USER_ID_COLUMN = "user_id";
+	private static final String MEMBER_TABLE_ORG_ID_COLUMN = "organisation_id";
 	private static final String MEMBER_TABLE_ROLE_COLUMN = "role";
 	private static final String MEMBER_TABLE_CREATION_DATE = "creationTime";
 	private static final String MEMBER_TABLE_MODIFICATION_DATE = "modificationTime";

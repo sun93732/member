@@ -6,12 +6,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import nz.paymark.client.shared.web.exception.ConflictException;
 import nz.paymark.client.shared.web.exception.RecordNotFoundException;
 import nz.paymark.member.api.MemberService;
 import nz.paymark.member.dao.MemberDao;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.MemberSearchCriteria;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 /***
@@ -34,8 +36,16 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public Member createMember(Member member) {
-		Member newMember = memberDao.createMember(member);
-		return newMember;
+		throwBadRequestIf(member.getUserId() == null, "userId", "UserId (UUID) should not be null.");
+		throwBadRequestIf(member.getOrganisationId() == null, "organisationId", "OrganisationId (UUID) should not be null.");
+		throwBadRequestIf(member.getRole() == null, "role", "Member role should not be null.");
+		try{
+			Member newMember = memberDao.createMember(member);
+			return newMember;
+		}catch(DataIntegrityViolationException ex){
+			throw new ConflictException("Combination of UserId and OrganisationId must be unique");
+		}
+		
 	}
 	
 	/**
@@ -48,6 +58,9 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member updateMember(Member member) {
 		throwBadRequestIf(member.getId() == null, "id", "Id should not be null.");
+		throwBadRequestIf(member.getUserId() == null, "userId", "UserId (UUID) should not be null.");
+		throwBadRequestIf(member.getOrganisationId() == null, "organisationId", "OrganisationId (UUID) should not be null.");
+		throwBadRequestIf(member.getRole() == null, "role", "Member role should not be null.");
 		Member dbMember = memberDao.getMember(member.getId());
 		if (dbMember == null) {
 			throw new RecordNotFoundException();
