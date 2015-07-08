@@ -5,9 +5,12 @@ import static nz.paymark.client.shared.web.exception.WebExceptionThrower.throwBa
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.persistence.OptimisticLockException;
 
 import nz.paymark.client.shared.web.exception.ConflictException;
+import nz.paymark.client.shared.web.exception.ForbiddenException;
 import nz.paymark.client.shared.web.exception.RecordNotFoundException;
+import nz.paymark.client.shared.web.exception.ValidationException;
 import nz.paymark.member.api.MemberService;
 import nz.paymark.member.dao.MemberDao;
 import nz.paymark.member.model.Member;
@@ -62,16 +65,20 @@ public class MemberServiceImpl implements MemberService {
 		throwBadRequestIf(member.getOrganisationId() == null, "organisationId", "OrganisationId (UUID) should not be null.");
 		throwBadRequestIf(member.getRole() == null, "role", "Member role should not be null.");
 		Member dbMember = memberDao.getMember(member.getId());
+		Member updatedMember = new Member();
 		if (dbMember == null) {
 			throw new RecordNotFoundException();
 		}
-		member.setModifiedTime(dbMember.getModifiedTime());
-		String memberId = memberDao.updateMember(member).getId();
-		dbMember = memberDao.getMember(memberId);
-		if(dbMember == null){
-			throw new RecordNotFoundException();
+		
+		if (!dbMember.getCreationTime().equals(member.getCreationTime())) {
+	           throw new ForbiddenException("Creation time cannot be modified.");
+	    }
+		try{
+			updatedMember = memberDao.updateMember(member);
+		}catch(OptimisticLockException e){
+			throw new ValidationException("Modified time is inconsistent in the request. Please perform fresh GET before PUT request.");
 		}
-		return dbMember;
+		return updatedMember;
 	}
 	
 	/**
