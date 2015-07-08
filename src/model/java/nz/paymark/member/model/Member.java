@@ -48,7 +48,7 @@ public class Member extends AbstractRestModel {
 	private LocalDateTime creationTime;
 	private LocalDateTime modifiedTime;
 
-	@Column(name = MEMBER_TABLE_CREATION_DATE)
+	@Column(name = MEMBER_TABLE_CREATION_DATE, updatable=false)
 	@ApiModelProperty(value = "The date when Member is created.  Date format follows ISO8601 YYYY-MM-DDThh:mm:ss.SSSZ. "
 			+ "Only required for PUT operations.", required = true)
 	@Convert(converter = LocalDateTimePersistenceConverter.class)

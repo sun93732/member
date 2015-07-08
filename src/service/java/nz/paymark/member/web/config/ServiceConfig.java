@@ -2,8 +2,6 @@ package nz.paymark.member.web.config;
 
 
 import nz.paymark.shared.database.config.DatabaseProperties;
-import nz.paymark.member.api.MemberService;
-import nz.paymark.member.service.MemberServiceImpl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

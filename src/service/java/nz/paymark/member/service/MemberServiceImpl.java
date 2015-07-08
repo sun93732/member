@@ -65,7 +65,13 @@ public class MemberServiceImpl implements MemberService {
 		if (dbMember == null) {
 			throw new RecordNotFoundException();
 		}
-		return memberDao.updateMember(member);
+		member.setModifiedTime(dbMember.getModifiedTime());
+		String memberId = memberDao.updateMember(member).getId();
+		dbMember = memberDao.getMember(memberId);
+		if(dbMember == null){
+			throw new RecordNotFoundException();
+		}
+		return dbMember;
 	}
 	
 	/**
