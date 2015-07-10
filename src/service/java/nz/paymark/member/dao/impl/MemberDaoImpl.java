@@ -60,7 +60,7 @@ public class MemberDaoImpl implements MemberDao {
 		throwNullArgumentFor(member);		
 		LocalDateTime now = LocalDateTime.now(Clock.systemUTC());
         member.setCreationTime(now);
-        member.setModifiedTime(now);
+        member.setModificationTime(now);
         validate(member);
         return em.merge(member);
 	}
@@ -148,13 +148,13 @@ public class MemberDaoImpl implements MemberDao {
 	
 	        if (mTimeBegin != null && mTimeEnd == null) {
 	            conditions.add(criteriaBuilder.greaterThanOrEqualTo(
-	            		memberRoot.get(Member_.modifiedTime), mTimeBegin));
+	            		memberRoot.get(Member_.modificationTime), mTimeBegin));
 	        } else if (mTimeBegin == null && mTimeEnd != null) {
 	            conditions.add(criteriaBuilder.lessThanOrEqualTo(
-	            		memberRoot.get(Member_.modifiedTime), mTimeEnd));
+	            		memberRoot.get(Member_.modificationTime), mTimeEnd));
 	        } else if (mTimeBegin != null && mTimeEnd != null) {
 	            conditions.add(criteriaBuilder.between(
-	            		memberRoot.get(Member_.modifiedTime), mTimeBegin,
+	            		memberRoot.get(Member_.modificationTime), mTimeBegin,
 	                    mTimeEnd));
 	        }
 		}

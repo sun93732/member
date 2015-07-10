@@ -42,7 +42,7 @@ public class MemberServiceControllerTest {
 		newMember.setOrganisationId(UUID.randomUUID().toString());
 		newMember.setRole(MemberRoles.EXPENSE_SUBMITTER);
 		newMember.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
-		newMember.setModifiedTime(newMember.getCreationTime());
+		newMember.setModificationTime(newMember.getCreationTime());
 		
 		savedMember = new Member();
 		savedMember.setId(UUID.randomUUID().toString());	
@@ -50,7 +50,7 @@ public class MemberServiceControllerTest {
 		savedMember.setOrganisationId(UUID.randomUUID().toString());
 		savedMember.setRole(MemberRoles.EXPENSE_SUBMITTER);
 		savedMember.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
-		savedMember.setModifiedTime(newMember.getCreationTime());
+		savedMember.setModificationTime(newMember.getCreationTime());
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class MemberServiceControllerTest {
 		newMemberCreated.setOrganisationId(UUID.randomUUID().toString());
 		newMemberCreated.setRole(MemberRoles.EXPENSE_SUBMITTER);
 		newMemberCreated.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
-		newMemberCreated.setModifiedTime(newMember.getCreationTime());
+		newMemberCreated.setModificationTime(newMember.getCreationTime());
 		
 		Member savedMemberCreated = new Member();
 		savedMemberCreated.setId(UUID.randomUUID().toString());	
@@ -97,7 +97,7 @@ public class MemberServiceControllerTest {
 		savedMemberCreated.setOrganisationId(UUID.randomUUID().toString());
 		savedMemberCreated.setRole(MemberRoles.EXPENSE_SUBMITTER);
 		savedMemberCreated.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
-		savedMemberCreated.setModifiedTime(newMember.getCreationTime());
+		savedMemberCreated.setModificationTime(newMember.getCreationTime());
 		
 		members.add(newMemberCreated);
 		members.add(savedMemberCreated);
@@ -124,7 +124,7 @@ public class MemberServiceControllerTest {
 		newMemberCreated.setOrganisationId(UUID.randomUUID().toString());
 		newMemberCreated.setRole(MemberRoles.EXPENSE_SUBMITTER);
 		newMemberCreated.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
-		newMemberCreated.setModifiedTime(newMember.getCreationTime());
+		newMemberCreated.setModificationTime(newMember.getCreationTime());
 		
 		Member savedMemberCreated = new Member();
 		savedMemberCreated.setId(UUID.randomUUID().toString());	
@@ -132,7 +132,7 @@ public class MemberServiceControllerTest {
 		savedMemberCreated.setOrganisationId(UUID.randomUUID().toString());
 		savedMemberCreated.setRole(MemberRoles.EXPENSE_SUBMITTER);
 		savedMemberCreated.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
-		savedMemberCreated.setModifiedTime(newMember.getCreationTime());
+		savedMemberCreated.setModificationTime(newMember.getCreationTime());
 		
 		members.add(newMemberCreated);
 		members.add(savedMemberCreated);
@@ -141,7 +141,7 @@ public class MemberServiceControllerTest {
 		String organisationId = newMemberCreated.getOrganisationId();
 		MemberRoles role = newMemberCreated.getRole();
 		LocalDateTime cTime = newMemberCreated.getCreationTime();
-		LocalDateTime mTime = newMemberCreated.getModifiedTime();
+		LocalDateTime mTime = newMemberCreated.getModificationTime();
 
 		MemberSearchCriteria criteria = new MemberSearchCriteria(userId,
 				organisationId, role);

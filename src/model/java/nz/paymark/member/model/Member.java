@@ -46,7 +46,7 @@ public class Member extends AbstractRestModel {
 	private String organisationId;
 	private MemberRoles role;
 	private LocalDateTime creationTime;
-	private LocalDateTime modifiedTime;
+	private LocalDateTime modificationTime;
 
 	@Column(name = MEMBER_TABLE_CREATION_DATE, updatable=false)
 	@ApiModelProperty(value = "The date when Member is created.  Date format follows ISO8601 YYYY-MM-DDThh:mm:ss.SSSZ. "
@@ -65,12 +65,12 @@ public class Member extends AbstractRestModel {
 			+ " Only required for PUT operations.", required = true)
 	@Type(type = "nz.paymark.shared.models.usertypes.PersistentLocalDateTime")
 	@Version
-	public LocalDateTime getModifiedTime() {
-		return modifiedTime;
+	public LocalDateTime getModificationTime() {
+		return modificationTime;
 	}
 
-	public void setModifiedTime(LocalDateTime modifiedTime) {
-		this.modifiedTime = modifiedTime;
+	public void setModificationTime(LocalDateTime modificationTime) {
+		this.modificationTime = modificationTime;
 	}
 
 	@Id
@@ -144,8 +144,8 @@ public class Member extends AbstractRestModel {
 		return this;
 	}
 
-	public Member withModifiedTime(LocalDateTime modifiedTime) {
-		setModifiedTime(modifiedTime);
+	public Member withModificationTime(LocalDateTime modificationTime) {
+		setModificationTime(modificationTime);
 		return this;
 	}
 }
