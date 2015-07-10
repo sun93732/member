@@ -136,7 +136,7 @@ public class MemberServiceController extends AbstractRestController {
 	}
 
 	@ApiOperation(value = "Delete an existing member.")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"),
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Deleted Member"),
 			@ApiResponse(code = 404, message = "Member not found") })
 	@Secured(ROLE_DELETE)
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, consumes = MIME_JSON, produces = MIME_JSON)
