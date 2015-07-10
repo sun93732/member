@@ -1,9 +1,7 @@
 package nz.paymark.member.web.config;
 
 
-import nz.paymark.database.shared.config.DatabaseProperties;
-import nz.paymark.member.api.MemberService;
-import nz.paymark.member.service.MemberServiceImpl;
+import nz.paymark.shared.database.config.DatabaseProperties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -49,10 +47,5 @@ public class ServiceConfig {
 		props.setSchema(MEMBER_SCHEMA);		
 		props.setPackageToScan(MEMBER_PACKAGE);
 		return props;
-	}
-	
-	@Bean
-	public MemberService memberService() {
-		return new MemberServiceImpl();
 	}
 }

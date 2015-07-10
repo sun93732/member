@@ -1,71 +1,94 @@
 package nz.paymark.member.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
+import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 
-import nz.paymark.member.model.enumerator.MemberStatus;
-import nz.paymark.shared.model.AbstractRestModel;
-import nz.paymark.shared.validation.annotation.IsUUID;
+import nz.paymark.client.shared.model.AbstractRestModel;
+import nz.paymark.member.model.enumerator.MemberRole;
+import nz.paymark.shared.models.usertypes.LocalDateTimePersistenceConverter;
+import nz.paymark.shared.models.validation.annotation.IsUUID;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
 @Entity
-@Table(name = "member", schema="member")/* schema here in MySQL is the database name*/
-public class Member extends AbstractRestModel{
-	
-	private static final String MEMBER_TABLE_ROLE_COLUMN = "role";
-	private static final String MEMBER_TABLE_STATUS_COLUMN = "status";
+@Table(name = "member", schema = "member", uniqueConstraints = @UniqueConstraint(columnNames = {
+		"user_Id", "organisation_Id" }))
+@ApiModel(value = "Member", description = "Details of Members.")
+public class Member extends AbstractRestModel {
+
+	private static final String MEMBER_TABLE_MEMBER_ID_COLUMN = "id";
 	private static final String MEMBER_TABLE_USER_ID_COLUMN = "user_id";
 	private static final String MEMBER_TABLE_ORG_ID_COLUMN = "organisation_id";
-	private static final String MEMBER_TABLE_MEMBER_ID_COLUMN = "id";
-	
+	private static final String MEMBER_TABLE_ROLE_COLUMN = "role";
+	private static final String MEMBER_TABLE_CREATION_DATE = "creation_time";
+	private static final String MEMBER_TABLE_MODIFICATION_DATE = "modification_time";
+	private static final String MEMBER_TABLE_MEMBER_ID_TYPE = "uuid";
+	private static final String MEMBER_TABLE_MEMBER_ID_STRATEGY = "uuid2";
+
 	@IsUUID
 	private String id;
-	
-	@Column(name = MEMBER_TABLE_ROLE_COLUMN)
-	private String role;
-	
-	@Column(name = MEMBER_TABLE_STATUS_COLUMN)
-	private MemberStatus status;
-	
-	@Column(name = MEMBER_TABLE_USER_ID_COLUMN)
+	@IsUUID
 	private String userId;
-	
-	@Column(name = MEMBER_TABLE_ORG_ID_COLUMN)
+	@IsUUID
 	private String organisationId;
-	
+	private MemberRole role;
+	private LocalDateTime creationTime;
+	private LocalDateTime modificationTime;
+
+	@Column(name = MEMBER_TABLE_CREATION_DATE, updatable=false)
+	@ApiModelProperty(value = "The date when Member is created.  Date format follows ISO8601 YYYY-MM-DDThh:mm:ss.SSSZ. "
+			+ "Only required for PUT operations.", required = true)
+	@Convert(converter = LocalDateTimePersistenceConverter.class)
+	public LocalDateTime getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(LocalDateTime creationTime) {
+		this.creationTime = creationTime;
+	}
+
+	@Column(name = MEMBER_TABLE_MODIFICATION_DATE)
+	@ApiModelProperty(value = "The date when Member is modified.  Date format follows ISO8601 YYYY-MM-DDThh:mm:ss.SSSZ."
+			+ " Only required for PUT operations.", required = true)
+	@Type(type = "nz.paymark.shared.models.usertypes.PersistentLocalDateTime")
+	@Version
+	public LocalDateTime getModificationTime() {
+		return modificationTime;
+	}
+
+	public void setModificationTime(LocalDateTime modificationTime) {
+		this.modificationTime = modificationTime;
+	}
+
 	@Id
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = MEMBER_TABLE_MEMBER_ID_TYPE, strategy = MEMBER_TABLE_MEMBER_ID_STRATEGY)
+	@GeneratedValue(generator = MEMBER_TABLE_MEMBER_ID_TYPE)
 	@Column(name = MEMBER_TABLE_MEMBER_ID_COLUMN, unique = true)
 	public String getId() {
 		return id;
 	}
-	
+
 	public void setId(String id) {
 		this.id = id;
 	}
 
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public MemberStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(MemberStatus status) {
-		this.status = status;
-	}
-
+	@GenericGenerator(name = MEMBER_TABLE_MEMBER_ID_TYPE, strategy = MEMBER_TABLE_MEMBER_ID_STRATEGY)
+	@GeneratedValue(generator = MEMBER_TABLE_MEMBER_ID_TYPE)
+	@Column(name = MEMBER_TABLE_USER_ID_COLUMN)
+	@NotNull
 	public String getUserId() {
 		return userId;
 	}
@@ -74,6 +97,10 @@ public class Member extends AbstractRestModel{
 		this.userId = userId;
 	}
 
+	@GenericGenerator(name = MEMBER_TABLE_MEMBER_ID_TYPE, strategy = MEMBER_TABLE_MEMBER_ID_STRATEGY)
+	@GeneratedValue(generator = MEMBER_TABLE_MEMBER_ID_TYPE)
+	@Column(name = MEMBER_TABLE_ORG_ID_COLUMN)
+	@NotNull
 	public String getOrganisationId() {
 		return organisationId;
 	}
@@ -82,29 +109,43 @@ public class Member extends AbstractRestModel{
 		this.organisationId = organisationId;
 	}
 
-	public Member withId(String id){
-		setId(id); 
+	@Column(name = MEMBER_TABLE_ROLE_COLUMN)
+	@NotNull
+	public MemberRole getRole() {
+		return role;
+	}
+
+	public void setRole(MemberRole role) {
+		this.role = role;
+	}
+
+	public Member withId(String id) {
+		setId(id);
 		return this;
 	}
 
-	public Member withOrganisationId(String organisationId){
-		setOrganisationId(organisationId); 
+	public Member withOrganisationId(String organisationId) {
+		setOrganisationId(organisationId);
 		return this;
 	}
 
-	public Member withRole(String role){
-		setRole(role); 
+	public Member withRole(MemberRole role) {
+		setRole(role);
 		return this;
 	}
 
-	public Member withStatus(MemberStatus status){
-		setStatus(status); 
+	public Member withUserId(String userId) {
+		setUserId(userId);
 		return this;
 	}
 
-	public Member withUserId(String userId){
-		setUserId(userId); 
+	public Member withCreationTime(LocalDateTime creationTime) {
+		setCreationTime(creationTime);
 		return this;
 	}
 
+	public Member withModificationTime(LocalDateTime modificationTime) {
+		setModificationTime(modificationTime);
+		return this;
+	}
 }
