@@ -36,14 +36,9 @@ public class MemberDaoImplTest {
 	public final static String aUUID2 = "65d3df1c-defb-11e4-b6a7-645106a22f51";
 	public final static String mockUserId = "7cf47fe2-c3dd-4c6b-9895-7ba767ba529c";
 	public final static String mockOrganisationId = "9cf27fe4-c1dd-4c6b-1892-7ba767ba902c";
-	public final static String[] emails = { "example@paymark.co.nz",
-			                                "example@anz.co.nz",
-			                                "example@paymark.co.nz",
-			                                "example@bnz.co.nz" };
 
 	@SuppressWarnings("unused")
-	private Member testMember1, testMember2, testMember3, testMember4, testMember5,
-			testMember6;
+	private Member testMember1, testMember2, testMember3;
 
 	private Member unsavedMember;
 
