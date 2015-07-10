@@ -1,0 +1,4 @@
+CREATE SCHEMA member;
+
+CREATE USER 'member' IDENTIFIED BY '@member_password@';
+GRANT INSERT, SELECT, UPDATE, DELETE ON member.* TO 'member'@'%' WITH GRANT OPTION;
