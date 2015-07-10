@@ -140,7 +140,7 @@ public class MemberServiceController extends AbstractRestController {
 			@ApiResponse(code = 404, message = "Member not found") })
 	@Secured(ROLE_DELETE)
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, consumes = MIME_JSON, produces = MIME_JSON)
-	@ResponseStatus(HttpStatus.GONE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void handleDelete(@PathVariable String id) {
 		service.deleteMember(id);
 	}
