@@ -13,7 +13,7 @@ import nz.paymark.client.shared.web.exception.RecordNotFoundException;
 import nz.paymark.member.api.MemberService;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.MemberSearchCriteria;
-import nz.paymark.member.model.enumerator.MemberRoles;
+import nz.paymark.member.model.enumerator.MemberRole;
 import nz.paymark.member.test.model.MemberModelTest;
 import nz.paymark.tools.testing.config.TestDatabaseConfig;
 
@@ -46,7 +46,7 @@ public class MemberServiceTest {
 		createTestMember.setId(MemberModelTest.aUUID);
 		createTestMember.setUserId(MemberModelTest.aUUID);
 		createTestMember.setOrganisationId(MemberModelTest.aUUID);
-		createTestMember.setRole(MemberRoles.EXPENSE_SUBSCRIBER);
+		createTestMember.setRole(MemberRole.EXPENSE_SUBSCRIBER);
 		
 		/* Creating Test member in DB */
 		
@@ -74,7 +74,7 @@ public class MemberServiceTest {
 	@Transactional
 	public void testUpdateMember() {
 		Member expected = service.getMember(member.getId());
-		expected.setRole(MemberRoles.EXPENSE_SUBMITTER);
+		expected.setRole(MemberRole.EXPENSE_SUBMITTER);
 
 		Member actual = service.updateMember(expected);
 		assertEquals(actual.getUserId(), expected.getUserId());

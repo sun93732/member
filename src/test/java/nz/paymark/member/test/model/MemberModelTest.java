@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import javax.validation.ConstraintViolationException;
 
 import nz.paymark.member.model.Member;
-import nz.paymark.member.model.enumerator.MemberRoles;
+import nz.paymark.member.model.enumerator.MemberRole;
 import nz.paymark.shared.models.validation.SimpleValidator;
 import nz.paymark.tools.testing.config.TestDatabaseConfig;
 
@@ -49,11 +49,11 @@ public class MemberModelTest {
     private String memberID = UUID.randomUUID().toString();
     private String userId = UUID.randomUUID().toString();
     private String organisationId = UUID.randomUUID().toString();
-    private MemberRoles memberRole = MemberRoles.EXPENSE_SUBMITTER;
+    private MemberRole memberRole = MemberRole.EXPENSE_SUBMITTER;
 
     public static Member createMember(String memberId,
             String userId, String organisationId,
-            MemberRoles memberRole) {
+            MemberRole memberRole) {
     	return new Member().withId(memberId).withUserId(userId).withOrganisationId(organisationId).withRole(memberRole);
     }
 

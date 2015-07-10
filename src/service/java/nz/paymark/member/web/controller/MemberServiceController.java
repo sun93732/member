@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import nz.paymark.member.api.MemberService;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.MemberSearchCriteria;
-import nz.paymark.member.model.enumerator.MemberRoles;
+import nz.paymark.member.model.enumerator.MemberRole;
 import nz.paymark.service.shared.controller.AbstractRestController;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -100,7 +100,7 @@ public class MemberServiceController extends AbstractRestController {
     public List<Member> handleSearchCriteria(
             @RequestParam(required = false) String userId,
             @RequestParam(required = false) String organisationId,
-            @RequestParam(required = false) MemberRoles role,
+            @RequestParam(required = false) MemberRole role,
             @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime creationTimeBegin,
             @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime creationTimeEnd,
             @RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) LocalDateTime modificationTimeBegin,

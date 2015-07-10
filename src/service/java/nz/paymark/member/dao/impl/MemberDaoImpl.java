@@ -23,7 +23,7 @@ import nz.paymark.member.dao.MemberDao;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.MemberSearchCriteria;
 import nz.paymark.member.model.Member_;
-import nz.paymark.member.model.enumerator.MemberRoles;
+import nz.paymark.member.model.enumerator.MemberRole;
 import nz.paymark.shared.models.validation.SimpleValidator;
 
 import org.slf4j.Logger;
@@ -121,7 +121,7 @@ public class MemberDaoImpl implements MemberDao {
                         memberRoot.get(Member_.organisationId), organisationId));
             }
             
-            MemberRoles role  = searchCriteria.getRole();
+            MemberRole role  = searchCriteria.getRole();
 			if (role != null) {
 				conditions.add(criteriaBuilder.equal(memberRoot.get(Member_.role),
 						role));

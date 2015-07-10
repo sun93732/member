@@ -2,21 +2,21 @@ package nz.paymark.member.model;
 
 import java.time.LocalDateTime;
 
-import nz.paymark.member.model.enumerator.MemberRoles;
+import nz.paymark.member.model.enumerator.MemberRole;
 
 public class MemberSearchCriteria {
 	
 	private String id;
 	private String userId;
 	private String organisationId;
-	private MemberRoles role;
+	private MemberRole role;
 	private LocalDateTime creationTimeBegin;
     private LocalDateTime creationTimeEnd;
     private LocalDateTime modificationTimeBegin;
     private LocalDateTime modificationTimeEnd;
     
     public MemberSearchCriteria(String userId, String organisationId,
-    		MemberRoles role, LocalDateTime creationTimeBegin,
+    		MemberRole role, LocalDateTime creationTimeBegin,
             LocalDateTime modificationTimeBegin) {
         this.userId = userId;
         this.organisationId = organisationId;
@@ -27,7 +27,7 @@ public class MemberSearchCriteria {
     }
 
     public MemberSearchCriteria(String userId, String organisationId,
-    		MemberRoles role, LocalDateTime creationTimeBegin,
+    		MemberRole role, LocalDateTime creationTimeBegin,
             LocalDateTime creationTimeEnd, LocalDateTime modificationTimeBegin,
             LocalDateTime modificationTimeEnd) {
         this(userId, organisationId, role, creationTimeBegin, modificationTimeBegin);
@@ -36,7 +36,7 @@ public class MemberSearchCriteria {
     }
 
     public MemberSearchCriteria(String userId, String organisationId,
-    		MemberRoles role) {
+    		MemberRole role) {
         this.userId = userId;
         this.organisationId = organisationId;
         this.role = role;
@@ -67,10 +67,10 @@ public class MemberSearchCriteria {
 		this.organisationId = organisationId;
 	}
     
-	public MemberRoles getRole() {
+	public MemberRole getRole() {
 		return role;
 	}
-	public void setRole(MemberRoles role) {
+	public void setRole(MemberRole role) {
 		this.role = role;
 	}
 	
@@ -121,7 +121,7 @@ public class MemberSearchCriteria {
     	return this;
     }
     
-    public MemberSearchCriteria withRole(MemberRoles role){
+    public MemberSearchCriteria withRole(MemberRole role){
     	setRole(role);
     	return this;
     }

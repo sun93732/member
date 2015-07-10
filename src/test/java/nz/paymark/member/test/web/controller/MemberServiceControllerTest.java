@@ -9,7 +9,7 @@ import java.util.UUID;
 import nz.paymark.client.shared.web.exception.BadRequestException;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.MemberSearchCriteria;
-import nz.paymark.member.model.enumerator.MemberRoles;
+import nz.paymark.member.model.enumerator.MemberRole;
 import nz.paymark.member.service.MemberServiceImpl;
 import nz.paymark.member.web.controller.MemberServiceController;
 
@@ -40,7 +40,7 @@ public class MemberServiceControllerTest {
 		newMember.setId(UUID.randomUUID().toString());	
 		newMember.setUserId(UUID.randomUUID().toString());
 		newMember.setOrganisationId(UUID.randomUUID().toString());
-		newMember.setRole(MemberRoles.EXPENSE_SUBMITTER);
+		newMember.setRole(MemberRole.EXPENSE_SUBMITTER);
 		newMember.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
 		newMember.setModificationTime(newMember.getCreationTime());
 		
@@ -48,7 +48,7 @@ public class MemberServiceControllerTest {
 		savedMember.setId(UUID.randomUUID().toString());	
 		savedMember.setUserId(UUID.randomUUID().toString());
 		savedMember.setOrganisationId(UUID.randomUUID().toString());
-		savedMember.setRole(MemberRoles.EXPENSE_SUBMITTER);
+		savedMember.setRole(MemberRole.EXPENSE_SUBMITTER);
 		savedMember.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
 		savedMember.setModificationTime(newMember.getCreationTime());
 	}
@@ -87,7 +87,7 @@ public class MemberServiceControllerTest {
 		newMemberCreated.setId(UUID.randomUUID().toString());	
 		newMemberCreated.setUserId(UUID.randomUUID().toString());
 		newMemberCreated.setOrganisationId(UUID.randomUUID().toString());
-		newMemberCreated.setRole(MemberRoles.EXPENSE_SUBMITTER);
+		newMemberCreated.setRole(MemberRole.EXPENSE_SUBMITTER);
 		newMemberCreated.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
 		newMemberCreated.setModificationTime(newMember.getCreationTime());
 		
@@ -95,7 +95,7 @@ public class MemberServiceControllerTest {
 		savedMemberCreated.setId(UUID.randomUUID().toString());	
 		savedMemberCreated.setUserId(UUID.randomUUID().toString());
 		savedMemberCreated.setOrganisationId(UUID.randomUUID().toString());
-		savedMemberCreated.setRole(MemberRoles.EXPENSE_SUBMITTER);
+		savedMemberCreated.setRole(MemberRole.EXPENSE_SUBMITTER);
 		savedMemberCreated.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
 		savedMemberCreated.setModificationTime(newMember.getCreationTime());
 		
@@ -122,7 +122,7 @@ public class MemberServiceControllerTest {
 		newMemberCreated.setId(UUID.randomUUID().toString());	
 		newMemberCreated.setUserId(UUID.randomUUID().toString());
 		newMemberCreated.setOrganisationId(UUID.randomUUID().toString());
-		newMemberCreated.setRole(MemberRoles.EXPENSE_SUBMITTER);
+		newMemberCreated.setRole(MemberRole.EXPENSE_SUBMITTER);
 		newMemberCreated.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
 		newMemberCreated.setModificationTime(newMember.getCreationTime());
 		
@@ -130,7 +130,7 @@ public class MemberServiceControllerTest {
 		savedMemberCreated.setId(UUID.randomUUID().toString());	
 		savedMemberCreated.setUserId(UUID.randomUUID().toString());
 		savedMemberCreated.setOrganisationId(UUID.randomUUID().toString());
-		savedMemberCreated.setRole(MemberRoles.EXPENSE_SUBMITTER);
+		savedMemberCreated.setRole(MemberRole.EXPENSE_SUBMITTER);
 		savedMemberCreated.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
 		savedMemberCreated.setModificationTime(newMember.getCreationTime());
 		
@@ -139,7 +139,7 @@ public class MemberServiceControllerTest {
 
 		String userId = newMemberCreated.getUserId();
 		String organisationId = newMemberCreated.getOrganisationId();
-		MemberRoles role = newMemberCreated.getRole();
+		MemberRole role = newMemberCreated.getRole();
 		LocalDateTime cTime = newMemberCreated.getCreationTime();
 		LocalDateTime mTime = newMemberCreated.getModificationTime();
 

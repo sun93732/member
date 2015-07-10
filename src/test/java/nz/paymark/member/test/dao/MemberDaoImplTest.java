@@ -16,7 +16,7 @@ import nz.paymark.client.shared.web.exception.RecordNotFoundException;
 import nz.paymark.member.dao.MemberDao;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.MemberSearchCriteria;
-import nz.paymark.member.model.enumerator.MemberRoles;
+import nz.paymark.member.model.enumerator.MemberRole;
 import nz.paymark.member.test.model.MemberModelTest;
 import nz.paymark.tools.testing.config.TestDatabaseConfig;
 
@@ -44,16 +44,16 @@ public class MemberDaoImplTest {
 
 	@Before
 	public void createFixtureData() {
-		testMember1 = createAndSaveMember(mockUserId, mockOrganisationId, MemberRoles.EXPENSE_SUBSCRIBER);
+		testMember1 = createAndSaveMember(mockUserId, mockOrganisationId, MemberRole.EXPENSE_SUBSCRIBER);
 		unsavedMember = new Member().withUserId("1cf89fe3-c3dd-4c6b-9027-7ba767ba810c").withOrganisationId("6cf09fe2-c3dd-4c6b-2189-7ba767ba906c")
-				.withRole(MemberRoles.EXPENSE_SUBMITTER);
+				.withRole(MemberRole.EXPENSE_SUBMITTER);
 		
-		testMember2 = createAndSaveMember("1cf28fe3-c3dd-4c6b-6930-7ba767ba218c", "7cf09fe2-c3dd-4c6b-8716-7ba767ba216c", MemberRoles.EXPENSE_SUBSCRIBER);;
-		testMember3 = createAndSaveMember("1cf85fe3-c3dd-4c6b-1296-7ba767ba317c", "8cf09fe2-c3dd-4c6b-0818-7ba767ba718c", MemberRoles.EXPENSE_SUBMITTER);;
+		testMember2 = createAndSaveMember("1cf28fe3-c3dd-4c6b-6930-7ba767ba218c", "7cf09fe2-c3dd-4c6b-8716-7ba767ba216c", MemberRole.EXPENSE_SUBSCRIBER);;
+		testMember3 = createAndSaveMember("1cf85fe3-c3dd-4c6b-1296-7ba767ba317c", "8cf09fe2-c3dd-4c6b-0818-7ba767ba718c", MemberRole.EXPENSE_SUBMITTER);;
 	}
 
 	public Member createAndSaveMember(String userId, String organisationId,
-			MemberRoles role) {
+			MemberRole role) {
 		Member member = new Member().withUserId(userId).withOrganisationId(organisationId)
 				.withRole(role);
 		member = dao.createMember(member);
@@ -107,7 +107,7 @@ public class MemberDaoImplTest {
 	@Test
 	@Transactional
 	public void testUpdateMember() {
-		testMember1.setRole(MemberRoles.EXPENSE_SUBSCRIBER);
+		testMember1.setRole(MemberRole.EXPENSE_SUBSCRIBER);
 		Member actual = dao.updateMember(testMember1);
 
 		assertNotNull(actual);

@@ -13,7 +13,7 @@ import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import nz.paymark.client.shared.model.AbstractRestModel;
-import nz.paymark.member.model.enumerator.MemberRoles;
+import nz.paymark.member.model.enumerator.MemberRole;
 import nz.paymark.shared.models.usertypes.LocalDateTimePersistenceConverter;
 import nz.paymark.shared.models.validation.annotation.IsUUID;
 
@@ -44,7 +44,7 @@ public class Member extends AbstractRestModel {
 	private String userId;
 	@IsUUID
 	private String organisationId;
-	private MemberRoles role;
+	private MemberRole role;
 	private LocalDateTime creationTime;
 	private LocalDateTime modificationTime;
 
@@ -111,11 +111,11 @@ public class Member extends AbstractRestModel {
 
 	@Column(name = MEMBER_TABLE_ROLE_COLUMN)
 	@NotNull
-	public MemberRoles getRole() {
+	public MemberRole getRole() {
 		return role;
 	}
 
-	public void setRole(MemberRoles role) {
+	public void setRole(MemberRole role) {
 		this.role = role;
 	}
 
@@ -129,7 +129,7 @@ public class Member extends AbstractRestModel {
 		return this;
 	}
 
-	public Member withRole(MemberRoles role) {
+	public Member withRole(MemberRole role) {
 		setRole(role);
 		return this;
 	}
