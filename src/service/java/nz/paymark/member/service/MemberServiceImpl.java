@@ -1,16 +1,16 @@
 package nz.paymark.member.service;
 
-import static nz.paymark.client.shared.web.exception.WebExceptionThrower.throwBadRequestIf;
+import static nz.paymark.web.shared.exception.WebExceptionThrower.throwBadRequestIf;
 
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.persistence.OptimisticLockException;
 
-import nz.paymark.client.shared.web.exception.ConflictException;
-import nz.paymark.client.shared.web.exception.ForbiddenException;
-import nz.paymark.client.shared.web.exception.RecordNotFoundException;
-import nz.paymark.client.shared.web.exception.ValidationException;
+import nz.paymark.web.shared.exception.ConflictException;
+import nz.paymark.web.shared.exception.ForbiddenException;
+import nz.paymark.web.shared.exception.RecordNotFoundException;
+import nz.paymark.web.shared.exception.ValidationException;
 import nz.paymark.member.api.MemberService;
 import nz.paymark.member.dao.MemberDao;
 import nz.paymark.member.model.Member;

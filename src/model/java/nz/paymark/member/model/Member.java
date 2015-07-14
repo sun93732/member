@@ -12,10 +12,10 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
-import nz.paymark.client.shared.model.AbstractRestModel;
 import nz.paymark.member.model.enumerator.MemberRole;
 import nz.paymark.shared.models.usertypes.LocalDateTimePersistenceConverter;
 import nz.paymark.shared.models.validation.annotation.IsUUID;
+import nz.paymark.web.shared.model.AbstractRestModel;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;

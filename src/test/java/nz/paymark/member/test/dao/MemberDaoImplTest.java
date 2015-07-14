@@ -12,7 +12,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolationException;
 
-import nz.paymark.client.shared.web.exception.RecordNotFoundException;
+import nz.paymark.web.shared.exception.RecordNotFoundException;
 import nz.paymark.member.dao.MemberDao;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.MemberSearchCriteria;
