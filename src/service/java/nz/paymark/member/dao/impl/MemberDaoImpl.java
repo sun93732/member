@@ -17,7 +17,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import nz.paymark.client.shared.web.exception.RecordNotFoundException;
+import nz.paymark.web.shared.exception.RecordNotFoundException;
 import nz.paymark.logging.LoggerFactory;
 import nz.paymark.member.dao.MemberDao;
 import nz.paymark.member.model.Member;

@@ -9,7 +9,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
-import nz.paymark.client.shared.web.exception.RecordNotFoundException;
+import nz.paymark.web.shared.exception.RecordNotFoundException;
 import nz.paymark.member.api.MemberService;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.MemberSearchCriteria;

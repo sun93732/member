@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import nz.paymark.client.shared.web.exception.BadRequestException;
+import nz.paymark.web.shared.exception.BadRequestException;
 import nz.paymark.member.model.Member;
 import nz.paymark.member.model.MemberSearchCriteria;
 import nz.paymark.member.model.enumerator.MemberRole;
@@ -157,9 +157,7 @@ public class MemberServiceControllerTest {
 	@Test
 	public void canDeleteMember() {
 		String uuid = UUID.randomUUID().toString();
-
 		controller.handleDelete(uuid);
-
 		verify(service, times(1)).deleteMember(uuid);
 	}
 

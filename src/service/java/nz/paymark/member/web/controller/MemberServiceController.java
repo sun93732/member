@@ -1,6 +1,6 @@
 package nz.paymark.member.web.controller;
 
-import static nz.paymark.client.shared.web.exception.WebExceptionThrower.throwBadRequestIf;
+import static nz.paymark.web.shared.exception.WebExceptionThrower.throwBadRequestIf;
 import static nz.paymark.shared.constant.Mime.MIME_JSON;
 
 import java.security.Principal;
