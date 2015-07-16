@@ -5,12 +5,10 @@ import static nz.paymark.web.shared.exception.WebExceptionThrower.throwBadReques
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.persistence.OptimisticLockException;
 
 import nz.paymark.web.shared.exception.ConflictException;
 import nz.paymark.web.shared.exception.ForbiddenException;
 import nz.paymark.web.shared.exception.RecordNotFoundException;
-import nz.paymark.web.shared.exception.ValidationException;
 import nz.paymark.member.api.MemberService;
 import nz.paymark.member.dao.MemberDao;
 import nz.paymark.member.model.Member;
@@ -33,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
     private static final Logger logger = LoggerFactory.getLogger();
 
     @Resource
-    MemberDao memberDao;
+    private MemberDao memberDao;
 
     /**
      * 
@@ -82,10 +80,21 @@ public class MemberServiceImpl implements MemberService {
                 "OrganisationId (UUID) should not be null.");
         throwBadRequestIf(member.getRole() == null, "role",
                 "Member role should not be null.");
+        
         Member dbMember = memberDao.getMember(member.getId());
-        Member updatedMember = new Member();
+
         if (dbMember == null) {
             throw new RecordNotFoundException();
+        }
+        
+        if(!dbMember.getUserId().equals(member.getUserId())) {
+        	logger.info("Forbidden to update a member userId");
+        	throw new ForbiddenException("Cannot update userId");
+        }
+        
+        if(!dbMember.getOrganisationId().equals(member.getOrganisationId())) {
+        	logger.info("Forbidden to update a member organisationId");
+        	throw new ForbiddenException("Cannot update organisationId");
         }
 
         if (!dbMember.getCreationTime().equals(member.getCreationTime())) {
@@ -93,15 +102,8 @@ public class MemberServiceImpl implements MemberService {
                     + member.getId());
             throw new ForbiddenException("Creation time cannot be modified.");
         }
-        try {
-            updatedMember = memberDao.updateMember(member);
-        } catch (OptimisticLockException e) {
-            logger.info("updateMember : Updated failed due to modification time's not matching with database for Member UUID: "
-                    + member.getId());
-            throw new ValidationException(
-                    "Modified time is inconsistent in the request. Please perform fresh GET before PUT request.");
-        }
-        return updatedMember;
+        
+        return memberDao.updateMember(member);
     }
 
     /**
@@ -115,9 +117,12 @@ public class MemberServiceImpl implements MemberService {
     public Member getMember(String id) throws RecordNotFoundException {
         throwBadRequestIf(id == null, "id", "Id should not be null.");
         throwBadRequestIf(id.length() == 0, "id", "Id should not be null.");
+        
         Member member = memberDao.getMember(id);
-        if (member == null)
+        if (member == null) {
             throw new RecordNotFoundException();
+        }
+        
         return member;
     }
 
