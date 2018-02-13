@@ -1,0 +1,17 @@
+dn: uid=TestMemberService, ou=machines,ou=api,dc=paymark,dc=co,dc=nz
+objectClass: top
+objectClass: simpleSecurityObject
+objectClass: account
+uid: TestMemberService
+userPassword: password
+
+# Member Group
+dn: cn=Member,ou=roles,ou=api,dc=paymark,dc=co,dc=nz
+objectClass: top
+objectClass: groupOfNames
+cn: Member
+member: uid=read,uid=Member,ou=services,ou=api,dc=paymark,dc=co,dc=nz
+member: uid=update,uid=Member,ou=services,ou=api,dc=paymark,dc=co,dc=nz
+member: uid=create,uid=Member,ou=services,ou=api,dc=paymark,dc=co,dc=nz
+member: uid=delete,uid=Member,ou=services,ou=api,dc=paymark,dc=co,dc=nz
+member: uid=TestMemberService,ou=machines,ou=api,dc=paymark,dc=co,dc=nz
